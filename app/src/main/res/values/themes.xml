@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.BotonReconocerAudio" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- Theme.Material3.DayNight.NoActionBar, si yo no cambio esto en el parent, no puedo hacer drawables propios para mis colores y formas -->
+
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.BotonReconocerAudio" parent="Base.Theme.BotonReconocerAudio" />
+</resources>
