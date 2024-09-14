@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == REQ_CODE_SPEECH_INPUT && resultCode == RESULT_OK && data != null) {
             ArrayList<String> resultado = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            String textoReconocido = resultado.get(0);
+            String textoReconocido = resultado.get(0); //cuidado que puede ser null, controlar eso.
 
             // Mostrar el texto en los logs
             Log.d("MainActivity", "Texto reconocido: " + textoReconocido);
