@@ -11,7 +11,7 @@
         android:id="@+id/textViewTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reconocer audio"
+        android:text="Funciona DB!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -24,18 +24,25 @@
         android:id="@+id/btnGrabar"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:text="Escuchamos..."
-        android:textSize="10dp"
-        android:textColor="@android:color/white"
         android:background="@drawable/round_button"
         android:backgroundTint="@null"
-        app:layout_constraintTop_toTopOf="parent"
+        android:text="Escuchamos..."
+        android:textColor="@android:color/white"
+        android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-
+    <Button
+        android:id="@+id/botonDB"
+        android:layout_width="57dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="4dp"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnGrabar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

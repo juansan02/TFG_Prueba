@@ -1,8 +1,10 @@
 package com.testeando.botonreconoceraudio;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
@@ -15,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.testeando.botonreconoceraudio.db.DbHelper;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,10 +26,34 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQ_CODE_SPEECH_INPUT = 100;
     private static final int PERMISSION_REQUEST_RECORD_AUDIO = 1;
 
+    private DbHelper dbHelper; // Declara el DbHelper
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Inicializa DbHelper para crear y gestionar la base de datos
+        dbHelper = new DbHelper(this);
+
+        Button botonDB = findViewById(R.id.botonDB);
+
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        if(db != null){
+            Toast.makeText(MainActivity.this, "Base de datos creada o ya creada", Toast.LENGTH_LONG).show();
+        } else{
+            Toast.makeText(MainActivity.this, "ERROR AL CREAR LA BASE", Toast.LENGTH_LONG).show();
+        }
+
+        botonDB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insertarDatosDePrueba();
+            }
+        });
+
 
         Button btnGrabar = findViewById(R.id.btnGrabar);
 
@@ -42,6 +70,24 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void insertarDatosDePrueba() {
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+
+        // Insertar un usuario
+        valores.put("nombre", "Usuario de Prueba");
+        long idUsuario = database.insert(DbHelper.TABLE_USUARIO, null, valores);
+
+        // Verificar la inserción
+        if (idUsuario != -1) {
+            Toast.makeText(this, "Usuario insertado correctamente", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Error al insertar el usuario", Toast.LENGTH_SHORT).show();
+        }
+
+        database.close();
     }
 
     @Override
