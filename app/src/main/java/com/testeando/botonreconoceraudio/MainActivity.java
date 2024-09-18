@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         // Inicializa DbHelper para crear y gestionar la base de datos
         dbHelper = new DbHelper(this);
 
-        Button botonDB = findViewById(R.id.botonDB);
+        Button botonDB = findViewById(R.id.botonDB); //BOTON SOLO PARA TESTEAR ----------------------- ELIMINAR
 
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "ERROR AL CREAR LA BASE", Toast.LENGTH_LONG).show();
         }
 
-        botonDB.setOnClickListener(new View.OnClickListener() {
+        botonDB.setOnClickListener(new View.OnClickListener() { //BOTON SOLO PARA TESTEAR ----------------------- ELIMINAR
             @Override
             public void onClick(View v) {
                 insertarDatosDePrueba();
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void insertarDatosDePrueba() {
+    private void insertarDatosDePrueba() { //FUNCION SOLO PARA TESTEAR ----------------------- ELIMINAR O CAMBIAR PARA AÑADIR USUARIO PRINCIPAL
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         ContentValues valores = new ContentValues();
 
