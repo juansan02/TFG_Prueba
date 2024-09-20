@@ -46,3 +46,12 @@ tasks.register("stage") {
     dependsOn("build")
 }
 
+// Tarea para generar el archivo local.properties dinámicamente
+tasks.register("createLocalProperties") {
+    doLast {
+        file("local.properties").writeText("sdk.dir=${System.getenv("ANDROID_HOME")}")
+    }
+}
+
+// Asegúrate de que se ejecute antes de compilar
+tasks.getByName("preBuild").dependsOn("createLocalProperties")
