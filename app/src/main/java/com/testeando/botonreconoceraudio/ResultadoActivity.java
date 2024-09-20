@@ -14,25 +14,31 @@ public class ResultadoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resultado);
 
-        TextView textView = findViewById(R.id.textView);
+        TextView textViewEmocion = findViewById(R.id.textViewEmocion);
+        TextView textViewScore = findViewById(R.id.textViewScore);
         Button btnVolver = findViewById(R.id.btnVolver);
 
-        // Obtener el texto enviado desde MainActivity
+        // Obtener el label y el score enviados desde BotonEmocionActivity
         Intent intent = getIntent();
-        String textoReconocido = intent.getStringExtra("textoReconocido");
+        String label = intent.getStringExtra("label");
+        double score = intent.getDoubleExtra("score", 0.0);
 
-        if (textoReconocido != null) {
-            textView.setText(textoReconocido);
+        // Verifica si se recibió el label
+        if (label != null && !label.isEmpty()) {
+            textViewEmocion.setText("Emoción: " + label);
+            textViewScore.setText("Score: " + score);
         } else {
-            textView.setText("No se recibió texto.");
+            textViewEmocion.setText("No se recibió emoción.");
+            textViewScore.setText("");
         }
 
-        // Configurar el botón para regresar a MainActivity
+        // Configurar el botón para regresar a BotonEmocionActivity
         btnVolver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();  // Termina la actividad actual y regresa a la anterior
+                finish();
             }
         });
     }
 }
+

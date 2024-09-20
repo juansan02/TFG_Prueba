@@ -1,7 +1,6 @@
 package com.testeando.botonreconoceraudio;
 
 import android.Manifest;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,57 +11,53 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.testeando.botonreconoceraudio.db.DbHelper;
-import com.testeando.botonreconoceraudio.db.DbUsuario;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class BotonEmocionActivity extends AppCompatActivity {
 
     private static final int REQ_CODE_SPEECH_INPUT = 100;
     private static final int PERMISSION_REQUEST_RECORD_AUDIO = 1;
+    private static final String API_URL = "https://emocionesapi-488b7ed138c5.herokuapp.com/analyze";
+    private static final String DEEPL_API_URL = "https://api-free.deepl.com/v2/translate"; // URL de la API de DeepL
+    private static final String DEEPL_API_KEY = "485d376e-2742-4545-a5c4-cc841c5813f5:fx"; // Tu clave de API
 
-    private DbHelper dbHelper; // Declara el DbHelper
-
+    private DbHelper dbHelper;
+    private OkHttpClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_boton_emocion);
 
-        // Inicializa DbHelper para crear y gestionar la base de datos
         dbHelper = new DbHelper(this);
+        client = new OkHttpClient();
 
-
-        Button botonDB = findViewById(R.id.botonDB); //BOTON SOLO PARA TESTEAR ----------------------- ELIMINAR
-
-
-
-
-        botonDB.setOnClickListener(new View.OnClickListener() { //BOTON SOLO PARA TESTEAR ----------------------- ELIMINAR
-            @Override
-            public void onClick(View v) {
-                insertarDatosDePrueba();
-            }
-        });
-
-        //Boton importante
         Button btnGrabar = findViewById(R.id.btnGrabar);
-
         btnGrabar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(BotonEmocionActivity.this, android.Manifest.permission.RECORD_AUDIO)
+                if (ContextCompat.checkSelfPermission(BotonEmocionActivity.this, Manifest.permission.RECORD_AUDIO)
                         != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(BotonEmocionActivity.this,
                             new String[]{Manifest.permission.RECORD_AUDIO},
@@ -72,27 +67,6 @@ public class BotonEmocionActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private void insertarDatosDePrueba() { // FUNCION SOLO PARA TESTEAR ----------------------- ELIMINAR O CAMBIAR PARA AÑADIR CONTACTO EN AGENDA
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
-        ContentValues valores = new ContentValues();
-
-        // Insertar un contacto en la tabla AGENDA
-        valores.put("id_usuario", 1); // Creo que siempre 1 porque solo va a haber un usuario
-        valores.put("nombre_contacto", "Contacto de Prueba");
-        valores.put("mac_contacto", "00:11:22:33:44:55"); // Ejemplo de dirección MAC
-
-        long idContacto = database.insert(DbHelper.TABLE_AGENDA, null, valores);
-
-        // Verificar la inserción
-        if (idContacto != -1) {
-            Toast.makeText(this, "Contacto insertado correctamente", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Error al insertar el contacto", Toast.LENGTH_SHORT).show();
-        }
-
-        database.close();
     }
 
     @Override
@@ -110,7 +84,7 @@ public class BotonEmocionActivity extends AppCompatActivity {
     private void iniciarReconocimientoDeVoz() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "es-ES"); // Configura el idioma al español
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "es-ES");
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Habla ahora...");
 
         try {
@@ -129,16 +103,117 @@ public class BotonEmocionActivity extends AppCompatActivity {
         if (requestCode == REQ_CODE_SPEECH_INPUT && resultCode == RESULT_OK && data != null) {
             ArrayList<String> resultado = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             if (resultado != null && !resultado.isEmpty()) {
-                String textoReconocido = resultado.get(0); // Cuidado con null, controla eso
-
-                // Mostrar el texto en los logs
+                String textoReconocido = resultado.get(0);
                 Log.d("MainActivity", "Texto reconocido: " + textoReconocido);
-
-                // Iniciar la actividad ResultadoActivity con el texto
-                Intent intent = new Intent(this, ResultadoActivity.class);
-                intent.putExtra("textoReconocido", textoReconocido);
-                startActivity(intent);
+                traducirTexto(textoReconocido);
             }
         }
+    }
+
+    private void traducirTexto(String texto) {
+        // Crear el JSON que se enviará
+        JSONObject jsonObject = new JSONObject();
+        try {
+            JSONArray texts = new JSONArray();
+            texts.put(texto);
+            jsonObject.put("text", texts);
+            jsonObject.put("source_lang", "ES");
+            jsonObject.put("target_lang", "EN");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        RequestBody body = RequestBody.create(
+                jsonObject.toString(),
+                MediaType.parse("application/json; charset=utf-8")
+        );
+
+        Request request = new Request.Builder()
+                .url(DEEPL_API_URL)
+                .post(body)
+                .addHeader("Authorization", "DeepL-Auth-Key " + DEEPL_API_KEY)
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("Translation Error", "Error en la solicitud: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData = response.body().string();
+                Log.d("Translation Response", "Respuesta: " + responseData);
+
+                if (!response.isSuccessful()) {
+                    Log.e("Translation Error", "Respuesta no exitosa: " + response.message());
+                    return;
+                }
+
+                // Manejo de la respuesta JSON
+                try {
+                    JSONObject jsonResponse = new JSONObject(responseData);
+                    JSONArray translations = jsonResponse.getJSONArray("translations");
+                    String translatedText = translations.getJSONObject(0).getString("text");
+                    Log.d("Translated Text", "Texto traducido: " + translatedText);
+
+                    // Aquí puedes enviar el texto traducido a la API de emociones
+                    enviarTextoAApi(translatedText);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void enviarTextoAApi(String textoTraducido) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("phrase", textoTraducido);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        RequestBody body = RequestBody.create(
+                jsonObject.toString(),
+                MediaType.parse("application/json; charset=utf-8")
+        );
+
+        Request request = new Request.Builder()
+                .url(API_URL)
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("API Error", "Error en la solicitud: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    Log.e("API Error", "Respuesta no exitosa: " + response.message());
+                    return;
+                }
+
+                // Manejo de la respuesta JSON
+                String responseData = response.body().string();
+                try {
+                    JSONObject jsonResponse = new JSONObject(responseData);
+                    String label = jsonResponse.getString("label");
+                    double score = jsonResponse.getDouble("score");
+
+                    // Iniciar ResultadoActivity con la emoción y el score
+                    Intent intent = new Intent(BotonEmocionActivity.this, ResultadoActivity.class);
+                    intent.putExtra("label", label);
+                    intent.putExtra("score", score);
+                    startActivity(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
