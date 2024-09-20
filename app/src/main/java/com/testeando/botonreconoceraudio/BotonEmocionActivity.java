@@ -56,7 +56,7 @@ public class BotonEmocionActivity extends AppCompatActivity {
             }
         });
 
-
+        //Boton importante
         Button btnGrabar = findViewById(R.id.btnGrabar);
 
         btnGrabar.setOnClickListener(new View.OnClickListener() {
