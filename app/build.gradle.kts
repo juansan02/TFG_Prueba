@@ -49,7 +49,7 @@ tasks.register("stage") {
 // Tarea para generar el archivo local.properties dinámicamente
 tasks.register("createLocalProperties") {
     doLast {
-        file("local.properties").writeText("sdk.dir=${System.getenv("ANDROID_HOME")}")
+        file("local.properties").writeText("sdk.dir=C:/Users/juana/AppData/Local/Android/Sdk")
     }
 }
 
