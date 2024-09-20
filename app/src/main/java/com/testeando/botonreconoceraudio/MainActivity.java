@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.testeando.botonreconoceraudio.db.DbHelper;
+import com.testeando.botonreconoceraudio.db.DbUsuario;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_RECORD_AUDIO = 1;
 
     private DbHelper dbHelper; // Declara el DbHelper
+    private DbUsuario dbUsuario; // Declaramos para trabajar con usuarios
 
 
     @Override
@@ -37,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
         // Inicializa DbHelper para crear y gestionar la base de datos
         dbHelper = new DbHelper(this);
 
+        dbUsuario = new DbUsuario(this); // Inicializamos DbUsuario
+
+
+
         Button botonDB = findViewById(R.id.botonDB); //BOTON SOLO PARA TESTEAR ----------------------- ELIMINAR
 
 
@@ -45,6 +51,16 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Base de datos creada o ya creada", Toast.LENGTH_LONG).show();
         } else{
             Toast.makeText(MainActivity.this, "ERROR AL CREAR LA BASE", Toast.LENGTH_LONG).show();
+        }
+
+
+        // Comprobar si hay un usuario en la base de datos
+        if (!dbUsuario.existeUsuario()) {
+            // Si no hay usuario, redirigir a IngresarNuevoUsuarioActivity
+            Intent intent = new Intent(MainActivity.this, IngresarNuevoUsuarioActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();  // Finalizamos MainActivity hasta que haya un usuario
         }
 
         botonDB.setOnClickListener(new View.OnClickListener() { //BOTON SOLO PARA TESTEAR ----------------------- ELIMINAR
@@ -72,19 +88,22 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void insertarDatosDePrueba() { //FUNCION SOLO PARA TESTEAR ----------------------- ELIMINAR O CAMBIAR PARA AÑADIR USUARIO PRINCIPAL
+    private void insertarDatosDePrueba() { // FUNCION SOLO PARA TESTEAR ----------------------- ELIMINAR O CAMBIAR PARA AÑADIR CONTACTO EN AGENDA
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         ContentValues valores = new ContentValues();
 
-        // Insertar un usuario
-        valores.put("nombre", "Usuario de Prueba");
-        long idUsuario = database.insert(DbHelper.TABLE_USUARIO, null, valores);
+        // Insertar un contacto en la tabla AGENDA
+        valores.put("id_usuario", 1); // Creo que siempre 1 porque solo va a haber un usuario
+        valores.put("nombre_contacto", "Contacto de Prueba");
+        valores.put("mac_contacto", "00:11:22:33:44:55"); // Ejemplo de dirección MAC
+
+        long idContacto = database.insert(DbHelper.TABLE_AGENDA, null, valores);
 
         // Verificar la inserción
-        if (idUsuario != -1) {
-            Toast.makeText(this, "Usuario insertado correctamente", Toast.LENGTH_SHORT).show();
+        if (idContacto != -1) {
+            Toast.makeText(this, "Contacto insertado correctamente", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Error al insertar el usuario", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error al insertar el contacto", Toast.LENGTH_SHORT).show();
         }
 
         database.close();
