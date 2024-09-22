@@ -10,6 +10,7 @@ import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private Button botonEmocion;
     private Button botonAgenda;
     private Button botonExplorar;
+    private TextView textviewBienvenido;
+
 
 
 
@@ -49,15 +52,17 @@ public class MainActivity extends AppCompatActivity {
         botonEmocion = findViewById(R.id.btnEmocion);
         botonAgenda = findViewById(R.id.btnAgenda);
         botonExplorar = findViewById(R.id.btnExplorar);
+        textviewBienvenido = findViewById(R.id.textViewBienvenido);
+
 
 
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        if(db != null){
-            Toast.makeText(MainActivity.this, "Base de datos creada o ya creada", Toast.LENGTH_LONG).show();
-        } else{
-            Toast.makeText(MainActivity.this, "ERROR AL CREAR LA BASE", Toast.LENGTH_LONG).show();
-        }
+//        if(db != null){
+//            Toast.makeText(MainActivity.this, "Base de datos creada o ya creada", Toast.LENGTH_LONG).show();
+//        } else{
+//            Toast.makeText(MainActivity.this, "ERROR AL CREAR LA BASE", Toast.LENGTH_LONG).show();
+//        }
 
         //DEJAR ESTO SI O SI, PARA QUE CUANDO SE INICIA LA APICACION SE COMPRUEBE SI ES PRIMER INGRESO O NO------------------------
         // Comprobar si hay un usuario en la base de datos
@@ -67,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();  // Finalizamos MainActivity hasta que haya un usuario
+        }else {
+            // Si existe, obtener el nombre y actualizar el TextView
+            String nombreUsuario = dbUsuario.obtenerNombreUsuario();
+            String textoBienvenida = getString(R.string.titulo_bienvenido, nombreUsuario);
+            textviewBienvenido.setText(textoBienvenida);
+
         }
         //------------------------------------------------------------------------------------------------------------------------
 

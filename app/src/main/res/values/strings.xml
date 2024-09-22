@@ -3,5 +3,7 @@
     <string name="btn_basico">Btn</string>
     <string name="btn_grabar_text">Escuchamos…</string>
     <string name="titulo_emocion">Emociones</string>
+    <string name="titulo_bienvenido">Bienvenido, %1$s!</string>
+
 
 </resources>

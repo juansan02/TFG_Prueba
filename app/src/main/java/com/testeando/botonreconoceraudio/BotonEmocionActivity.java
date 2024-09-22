@@ -1,6 +1,7 @@
 package com.testeando.botonreconoceraudio;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
@@ -53,6 +54,7 @@ public class BotonEmocionActivity extends AppCompatActivity {
         dbHelper = new DbHelper(this);
         client = new OkHttpClient();
 
+
         Button btnGrabar = findViewById(R.id.btnGrabar);
         btnGrabar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +69,38 @@ public class BotonEmocionActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
+        Button botonDB = findViewById(R.id.botonDB); //BOTON SOLO PARA TESTEAR ----------------------- ELIMINAR
+
+        botonDB.setOnClickListener(new View.OnClickListener() { //BOTON SOLO PARA TESTEAR ----------------------- ELIMINAR
+            @Override
+            public void onClick(View v) {
+                insertarDatosDePrueba();
+            }
+        });
+    }
+
+    private void insertarDatosDePrueba() { // FUNCION SOLO PARA TESTEAR ----------------------- ELIMINAR O CAMBIAR PARA AÑADIR CONTACTO EN AGENDA
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+
+        // Insertar un contacto en la tabla AGENDA
+        valores.put("id_usuario", 1); // Creo que siempre 1 porque solo va a haber un usuario
+        valores.put("nombre_contacto", "Contacto de Prueba");
+        valores.put("mac_contacto", "00:11:22:33:44:55"); // Ejemplo de dirección MAC
+
+        long idContacto = database.insert(DbHelper.TABLE_AGENDA, null, valores);
+
+        // Verificar la inserción
+        if (idContacto != -1) {
+            Toast.makeText(this, "Contacto insertado correctamente", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Error al insertar el contacto", Toast.LENGTH_SHORT).show();
+        }
+
+        database.close();
     }
 
     @Override
