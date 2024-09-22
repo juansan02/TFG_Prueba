@@ -4,6 +4,15 @@
     <string name="btn_grabar_text">Escuchamos…</string>
     <string name="titulo_emocion">Emociones</string>
     <string name="titulo_bienvenido">Bienvenido, %1$s!</string>
+    <string name="btn_emociones">Emociones</string>
+    <string name="btn_agenda">Agenda</string>
+    <string name="btn_explorar">Explorar</string>
+    <string name="btn_continuar">Continuar</string>
+    <string name="etNombreUsuario">Introduce tu nombre</string>
+    <string name="btn_volver">Volver</string>
+    <string name="text_norespuesta">No Respuesta</string>
+
+
 
 
 </resources>
