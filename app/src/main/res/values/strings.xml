@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BotonReconocerAudio</string>
+    <string name="app_name">AskEmotions</string>
     <string name="btn_basico">Btn</string>
     <string name="btn_grabar_text">Escuchamos…</string>
     <string name="titulo_emocion">Emociones</string>
