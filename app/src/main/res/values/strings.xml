@@ -12,6 +12,13 @@
     <string name="btn_volver">Volver</string>
     <string name="text_norespuesta">No Respuesta</string>
     <string name="text_agenda">Agenda</string>
+    <string name="text_tituloinfocontacto">Información Contacto</string>
+    <string name="text_nombreContacto">Nombre: %1$s</string>
+    <string name="text_numeroConver">Nº Conversaciones: %1$s</string>
+    <string name="text_vecesBoton">Nº Veces Emociones: %1$s</string>
+    <string name="btn_conversaciones">Converaciones</string>
+    <string name="text_nombreConversacion">Conversaciones con: %1$s</string>
+
 
 
 </resources>

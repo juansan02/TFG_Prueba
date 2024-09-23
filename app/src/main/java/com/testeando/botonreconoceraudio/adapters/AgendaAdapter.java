@@ -1,6 +1,7 @@
 package com.testeando.botonreconoceraudio.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.testeando.botonreconoceraudio.InfoContactoActivity;
 import com.testeando.botonreconoceraudio.R;
 import com.testeando.botonreconoceraudio.models.Contacto;
 import java.util.List;
@@ -37,8 +39,15 @@ public class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.ContactoVi
         holder.nombreContacto.setText(contacto.getNombreContacto());
 
         holder.itemView.setOnClickListener(v -> {
-            // Aquí manejas el clic en el contacto
-            Toast.makeText(context, "Seleccionaste: " + contacto.getNombreContacto(), Toast.LENGTH_SHORT).show();
+            // Crear un Intent para abrir InfoContactoActivity
+            Intent intent = new Intent(context, InfoContactoActivity.class);
+
+            // Pasar información del contacto a la nueva actividad
+            intent.putExtra("contacto_id", contacto.getIdContacto()); // Asegúrate de que tienes un método getIdContacto()
+            intent.putExtra("contacto_nombre", contacto.getNombreContacto());
+
+            // Iniciar la actividad
+            context.startActivity(intent);
         });
     }
 
