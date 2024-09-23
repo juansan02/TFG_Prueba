@@ -92,6 +92,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Agrega el OnClickListener para el botón btnAgenda
+        botonAgenda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Inicia la actividad BotonEmocionActivity
+                Intent intent = new Intent(MainActivity.this, BotonAgendaActivity.class);
+                startActivity(intent);
+            }
+        });
+        botonExplorar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Inicia la actividad BotonEmocionActivity
+                Intent intent = new Intent(MainActivity.this, BotonExplorarActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
 
 
