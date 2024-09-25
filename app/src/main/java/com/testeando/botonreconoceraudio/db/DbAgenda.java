@@ -56,6 +56,12 @@ public class DbAgenda extends DbHelper {
         return null; // No encontrado
     }
 
+    public void borrarContacto(String nombreContacto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("t_agenda", "nombre_contacto = ?", new String[]{nombreContacto});
+        db.close();
+    }
+
     public List<Contacto> getAllContactos() {
         List<Contacto> contactos = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();

@@ -18,6 +18,7 @@
     <string name="text_numeroConver">Nº Conversaciones:</string>
     <string name="text_vecesBoton">Nº Veces Emociones:</string>
     <string name="btn_conversaciones">Converaciones</string>
+    <string name="btn_borrarContacto">Borrar</string>
     <string name="text_nombreConversacion">Conversaciones con:</string>
     <string name="text_explorar">Explorar</string>
 
@@ -29,6 +30,9 @@
     <string name="text_macDispositivo">MAC Dispositivo:</string>
     <string name="btn_agregar">Agregar</string>
     <string name="text_agregarContacto">Agregar contacto</string>
+
+    <string name="text_no_contactos">AÚN NO TIENES CONTACTOS, VE A EXPLORAR Y AÑADE EL PRIMERO</string>
+
 
 
 </resources>
