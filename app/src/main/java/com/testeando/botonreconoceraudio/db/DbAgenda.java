@@ -1,5 +1,6 @@
 package com.testeando.botonreconoceraudio.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,6 +15,30 @@ public class DbAgenda extends DbHelper {
     public DbAgenda(Context context) {
         super(context);
     }
+
+    // Método para añadir un contacto a la agenda
+    public boolean addContacto(String nombreContacto, String nombreDispositivo, String macDispositivo) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Crear un ContentValues para insertar el nuevo contacto
+        ContentValues values = new ContentValues();
+        values.put("id_usuario", 1); // Establecer el id_usuario a 1
+        values.put("nombre_contacto", nombreContacto);
+        values.put("nombre_dispositivo", nombreDispositivo);
+        values.put("mac_dispositivo", macDispositivo);
+
+        // Insertar el nuevo contacto y obtener el resultado
+        long result = db.insert(DbHelper.TABLE_AGENDA, null, values);
+
+        // Cerrar la base de datos
+        db.close();
+
+        // Retornar verdadero si la inserción fue exitosa, falso de lo contrario
+        return result != -1;
+    }
+
+
+
     public boolean hasContactos() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(DbHelper.TABLE_AGENDA, null, null, null, null, null, null);
@@ -34,9 +59,9 @@ public class DbAgenda extends DbHelper {
             do {
                 int idContacto = cursor.getInt(cursor.getColumnIndexOrThrow("id_contacto"));
                 String nombreContacto = cursor.getString(cursor.getColumnIndexOrThrow("nombre_contacto"));
-                String macContacto = cursor.getString(cursor.getColumnIndexOrThrow("mac_contacto"));
+                String macDispositivo = cursor.getString(cursor.getColumnIndexOrThrow("mac_dispositivo")); // Cambia 'mac_contacto' a 'mac_dispositivo'
 
-                Contacto contacto = new Contacto(idContacto, nombreContacto, macContacto);
+                Contacto contacto = new Contacto(idContacto, nombreContacto, macDispositivo);
                 contactos.add(contacto);
             } while (cursor.moveToNext());
             cursor.close();
@@ -44,5 +69,6 @@ public class DbAgenda extends DbHelper {
 
         return contactos;
     }
+
 
 }

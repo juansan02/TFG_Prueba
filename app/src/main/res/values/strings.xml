@@ -8,17 +8,27 @@
     <string name="btn_agenda">Agenda</string>
     <string name="btn_explorar">Explorar</string>
     <string name="btn_continuar">Continuar</string>
+    <string name="btn_buscar">Buscar</string>
     <string name="etNombreUsuario">Introduce tu nombre</string>
     <string name="btn_volver">Volver</string>
     <string name="text_norespuesta">No Respuesta</string>
     <string name="text_agenda">Agenda</string>
     <string name="text_tituloinfocontacto">Información Contacto</string>
-    <string name="text_nombreContacto">Nombre: %1$s</string>
-    <string name="text_numeroConver">Nº Conversaciones: %1$s</string>
-    <string name="text_vecesBoton">Nº Veces Emociones: %1$s</string>
+    <string name="text_nombreContacto">Nombre:</string>
+    <string name="text_numeroConver">Nº Conversaciones:</string>
+    <string name="text_vecesBoton">Nº Veces Emociones:</string>
     <string name="btn_conversaciones">Converaciones</string>
-    <string name="text_nombreConversacion">Conversaciones con: %1$s</string>
+    <string name="text_nombreConversacion">Conversaciones con:</string>
+    <string name="text_explorar">Explorar</string>
 
+    <string name="etNombreNuevoContacto">Nombre Contacto</string>
+
+
+
+    <string name="text_nombreDispositivo">Nombre Dispositivo:</string>
+    <string name="text_macDispositivo">MAC Dispositivo:</string>
+    <string name="btn_agregar">Agregar</string>
+    <string name="text_agregarContacto">Agregar contacto</string>
 
 
 </resources>

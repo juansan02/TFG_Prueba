@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Estilo existente -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Personaliza tu tema aquí -->
+    </style>
+
+    <!-- Nuevo estilo para el hint -->
+    <style name="HintTextStyle">
+        <item name="android:textSize">9sp</item> <!-- Cambia el tamaño según lo necesites -->
+        <item name="android:textColor">@android:color/darker_gray</item> <!-- Color opcional para el hint -->
+    </style>
+</resources>

@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- Permisos para usar el micrófono e internet -->
+    <!-- Permisos de ubicación y Bluetooth -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" /> <!-- Declaración del dispositivo como reloj -->
-    <uses-feature android:name="android.hardware.type.watch" />
+    <uses-feature
+        android:name="android.hardware.type.watch"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -16,17 +27,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BotonReconocerAudio"
         tools:targetApi="31">
+
+
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ConversacionesActivity"
             android:exported="false" />
         <activity
             android:name=".InfoContactoActivity"
             android:exported="false" />
-
-        <meta-data
-            android:name="com.google.android.wearable.standalone"
-            android:value="true" />
-
         <activity
             android:name=".BotonExplorarActivity"
             android:exported="false"
@@ -44,19 +65,13 @@
             android:exported="false"
             android:taskAffinity="com.testeando.botonreconoceraudio" />
         <activity
-            android:name=".ResultadoActivity"
-            android:exported="false"
-            android:taskAffinity="" /> <!-- MainActivity -->
+            android:name=".AgregarContactoActivity"
+            android:exported="false" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:taskAffinity="">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:name=".ResultadoActivity"
+            android:exported="false" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.testeando.botonreconoceraudio;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -56,6 +57,19 @@ public class BotonAgendaActivity extends AppCompatActivity {
             wearableRecyclerView.setAdapter(agendaAdapter);
         }
     }
+
+//    private void manejarClickDispositivo(String nombreDispositivo, String macDispositivo) {
+//        if (dbAgenda.isDispositivoAgregado(macDispositivo)) {
+//            String nombreContacto = dbAgenda.getNombreContactoByMac(macDispositivo); // Asume que tienes un método que devuelve el nombre asociado
+//            Toast.makeText(this, "Dispositivo ya agregado: " + nombreContacto, Toast.LENGTH_SHORT).show();
+//        } else {
+//            Intent intent = new Intent(this, AgregarContactoActivity.class);
+//            intent.putExtra("nombreDispositivo", nombreDispositivo);
+//            intent.putExtra("macDispositivo", macDispositivo);
+//            startActivity(intent);
+//        }
+//    }
+
 
 
 }

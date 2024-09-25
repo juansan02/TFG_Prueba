@@ -29,7 +29,9 @@ public class ConversacionesActivity extends AppCompatActivity {
 
         // Mostrar el nombre en el TextView correspondiente con HTML
         TextView textViewContacto = findViewById(R.id.textViewContacto);
-        String formattedName = String.format("<b>Conversaciones con:</b> %s", contactoNombre);
+
+        String formattedName = String.format("<b>%s</b> %s", getString(R.string.text_nombreConversacion), contactoNombre);
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             textViewContacto.setText(Html.fromHtml(formattedName, Html.FROM_HTML_MODE_LEGACY));
