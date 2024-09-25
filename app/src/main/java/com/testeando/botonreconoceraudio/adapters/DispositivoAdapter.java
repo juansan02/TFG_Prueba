@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.testeando.botonreconoceraudio.AgregarContactoActivity;
 import com.testeando.botonreconoceraudio.R;
+import com.testeando.botonreconoceraudio.db.DbAgenda;
+import com.testeando.botonreconoceraudio.models.Contacto;
 
 import java.util.List;
 
@@ -21,11 +23,13 @@ public class DispositivoAdapter extends RecyclerView.Adapter<DispositivoAdapter.
     private List<String> dispositivos;
     private List<String> macs;
     private Context context;
+    private DbAgenda dbAgenda;
 
     public DispositivoAdapter(List<String> dispositivos, List<String> macs, Context context) {
         this.dispositivos = dispositivos;
         this.macs = macs;
         this.context = context;
+        this.dbAgenda = new DbAgenda(context); // Inicializa la instancia de DbAgenda
     }
 
     @NonNull
@@ -44,13 +48,18 @@ public class DispositivoAdapter extends RecyclerView.Adapter<DispositivoAdapter.
 
         // Manejar el clic en el item
         holder.itemView.setOnClickListener(v -> {
-            Toast.makeText(context, "Dispositivo seleccionado: " + dispositivo, Toast.LENGTH_SHORT).show();
-
-            // Iniciar la actividad AgregarContactoActivity
-            Intent intent = new Intent(context, AgregarContactoActivity.class);
-            intent.putExtra("nombreDispositivo", dispositivos.get(position));
-            intent.putExtra("macDispositivo", macs.get(position));
-            context.startActivity(intent);
+            // Verificar si el dispositivo ya está agregado a la agenda
+            Contacto contactoExistente = dbAgenda.getContactoByMac(mac);
+            if (contactoExistente != null) {
+                // Si ya existe, mostrar un Toast con el nombre del contacto
+                Toast.makeText(context, "Dispositivo ya agregado: " + contactoExistente.getNombreContacto(), Toast.LENGTH_SHORT).show();
+            } else {
+                // Si no existe, iniciar la actividad AgregarContactoActivity
+                Intent intent = new Intent(context, AgregarContactoActivity.class);
+                intent.putExtra("nombreDispositivo", dispositivo);
+                intent.putExtra("macDispositivo", mac);
+                context.startActivity(intent);
+            }
         });
     }
 
