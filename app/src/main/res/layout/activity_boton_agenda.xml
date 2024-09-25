@@ -12,12 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_agenda"
-        app:layout_constraintBottom_toTopOf="@+id/wearableRecyclerView"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.wear.widget.WearableRecyclerView
         android:id="@+id/wearableRecyclerView"
@@ -42,10 +40,11 @@
         android:textSize="16sp"
         android:paddingStart="13sp"
         android:paddingEnd="8sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone" /> <!-- Inicialmente oculto -->
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.5"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

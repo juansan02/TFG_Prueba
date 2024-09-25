@@ -7,15 +7,12 @@ import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-import com.testeando.botonreconoceraudio.db.DbAgenda;
 
 public class InfoContactoActivity extends AppCompatActivity {
 
@@ -39,8 +36,8 @@ public class InfoContactoActivity extends AppCompatActivity {
         botonConversaciones = findViewById(R.id.btnConversaciones);
         btnBorrarContacto = findViewById(R.id.btnBorrarContacto);
 
-        String numeroConver = "TO DO BD";
-        String vecesBoton = "TO DO BD";
+        String numeroConver = "TO DO BD"; // Reemplaza con el valor real
+        String vecesBoton = "TO DO BD"; // Reemplaza con el valor real
 
         TextView textViewInfoContacto = findViewById(R.id.textViewNombreContacto);
         String formattedName = String.format("<b>%s</b> %s", getString(R.string.text_nombreContacto), contactoNombre);
@@ -75,16 +72,23 @@ public class InfoContactoActivity extends AppCompatActivity {
         btnBorrarContacto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Eliminar el contacto de la base de datos
-                DbAgenda dbAgenda = new DbAgenda(InfoContactoActivity.this);
-                dbAgenda.borrarContacto(contactoNombre); // Llamar al método para borrar el contacto
-
-                // Mostrar un toast con el mensaje de borrado
-                Toast.makeText(InfoContactoActivity.this, "Borrado el usuario", Toast.LENGTH_SHORT).show();
-
-                // Volver a la actividad anterior
-                finish(); // Termina la actividad actual
+                // Iniciar la actividad de confirmación
+                Intent intent = new Intent(InfoContactoActivity.this, ConfirmarBorradoActivity.class);
+                intent.putExtra("contacto_nombre", contactoNombre);
+                startActivityForResult(intent, 1);
             }
         });
+    }
+
+    // Manejar el resultado al volver de ConfirmarBorradoActivity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            boolean contactoBorrado = data.getBooleanExtra("contacto_borrado", false);
+            if (contactoBorrado) {
+                finish(); // Termina la actividad actual si el contacto fue borrado
+            }
+        }
     }
 }

@@ -17,13 +17,12 @@
     <string name="text_nombreContacto">Nombre:</string>
     <string name="text_numeroConver">Nº Conversaciones:</string>
     <string name="text_vecesBoton">Nº Veces Emociones:</string>
-    <string name="btn_conversaciones">Converaciones</string>
+    <string name="btn_conversaciones">Conversaciones</string>
     <string name="btn_borrarContacto">Borrar</string>
     <string name="text_nombreConversacion">Conversaciones con:</string>
     <string name="text_explorar">Explorar</string>
 
     <string name="etNombreNuevoContacto">Nombre Contacto</string>
-
 
 
     <string name="text_nombreDispositivo">Nombre Dispositivo:</string>
@@ -32,7 +31,9 @@
     <string name="text_agregarContacto">Agregar contacto</string>
 
     <string name="text_no_contactos">AÚN NO TIENES CONTACTOS, VE A EXPLORAR Y AÑADE EL PRIMERO</string>
-
+    <string name="titulo_confirmarBorrado">¿Estás seguro de que deseas borrar este contacto?</string>
+    <string name="btn_si">Sí</string>
+    <string name="btn_no">No</string>
 
 
 </resources>

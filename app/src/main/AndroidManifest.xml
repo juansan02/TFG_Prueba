@@ -27,7 +27,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BotonReconocerAudio"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ConfirmarBorradoActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.wearable.standalone"
@@ -70,8 +72,6 @@
         <activity
             android:name=".ResultadoActivity"
             android:exported="false" />
-
-
     </application>
 
 </manifest>

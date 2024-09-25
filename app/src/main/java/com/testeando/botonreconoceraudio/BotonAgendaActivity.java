@@ -6,20 +6,17 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView; // Importa TextView
+import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.wear.widget.WearableRecyclerView;
 import com.testeando.botonreconoceraudio.adapters.AgendaAdapter;
 import com.testeando.botonreconoceraudio.db.DbAgenda;
 import com.testeando.botonreconoceraudio.models.Contacto;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.wear.widget.WearableRecyclerView;
-
 import java.util.List;
 
 public class BotonAgendaActivity extends AppCompatActivity {
@@ -27,7 +24,7 @@ public class BotonAgendaActivity extends AppCompatActivity {
     private WearableRecyclerView wearableRecyclerView;
     private AgendaAdapter agendaAdapter;
     private DbAgenda dbAgenda;
-    private TextView textViewNoContactos; // Declara el TextView
+    private TextView textViewNoContactos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +38,7 @@ public class BotonAgendaActivity extends AppCompatActivity {
         });
 
         wearableRecyclerView = findViewById(R.id.wearableRecyclerView);
-        textViewNoContactos = findViewById(R.id.textViewNoContactos); // Inicializa el TextView
+        textViewNoContactos = findViewById(R.id.textViewNoContactos);
         dbAgenda = new DbAgenda(this);
 
         wearableRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -57,32 +54,32 @@ public class BotonAgendaActivity extends AppCompatActivity {
 
     private void cargarContactos() {
         List<Contacto> contactos = dbAgenda.getAllContactos();
-        Log.d("BotonAgendaActivity", "Cantidad de contactos: " + contactos.size()); // Para depuración
-
-
-
+        Log.d("BotonAgendaActivity", "Cantidad de contactos: " + contactos.size());
 
         if (contactos.isEmpty()) {
             Log.d("BotonAgendaActivity", "No hay contactos en la base de datos.");
-
-            TextView textViewNoContactos = findViewById(R.id.textViewNoContactos);
-            String formattedName = String.format("<b>%s</b>", getString(R.string.text_no_contactos));
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                textViewNoContactos.setText(Html.fromHtml(formattedName, Html.FROM_HTML_MODE_LEGACY));
-            } else {
-                textViewNoContactos.setText(Html.fromHtml(formattedName));
-            }
-
-            textViewNoContactos.setVisibility(View.VISIBLE);
+            mostrarMensajeSinContactos();
         } else {
             agendaAdapter = new AgendaAdapter(contactos, this);
             wearableRecyclerView.setAdapter(agendaAdapter);
-
-            // Asegurarse de ocultar el TextView cuando hay contactos
-            textViewNoContactos.setVisibility(View.GONE);
+            ocultarMensajeSinContactos();
         }
     }
 
+    private void mostrarMensajeSinContactos() {
+        String formattedName = String.format("<b>%s</b>", getString(R.string.text_no_contactos));
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            textViewNoContactos.setText(Html.fromHtml(formattedName, Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            textViewNoContactos.setText(Html.fromHtml(formattedName));
+        }
+        textViewNoContactos.setVisibility(View.VISIBLE);
+        wearableRecyclerView.setVisibility(View.GONE); // Oculta el RecyclerView
+    }
+
+    private void ocultarMensajeSinContactos() {
+        textViewNoContactos.setVisibility(View.GONE);
+        wearableRecyclerView.setVisibility(View.VISIBLE); // Muestra el RecyclerView
+    }
 }
