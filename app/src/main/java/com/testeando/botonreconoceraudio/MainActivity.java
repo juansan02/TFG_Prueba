@@ -64,8 +64,7 @@ public class MainActivity extends AppCompatActivity {
 //            Toast.makeText(MainActivity.this, "ERROR AL CREAR LA BASE", Toast.LENGTH_LONG).show();
 //        }
 
-        //DEJAR ESTO SI O SI, PARA QUE CUANDO SE INICIA LA APICACION SE COMPRUEBE SI ES PRIMER INGRESO O NO------------------------
-        // Comprobar si hay un usuario en la base de datos
+        //DEJAR ESTO SI O SI, PARA QUE CUANDO SE INICIA LA APICACION SE COMPRUEBE SI ES PRIMER INGRESO O NO
         if (!dbUsuario.existeUsuario()) {
             // Si no hay usuario, redirigir a IngresarNuevoUsuarioActivity
             Intent intent = new Intent(MainActivity.this, IngresarNuevoUsuarioActivity.class);
@@ -79,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
             textviewBienvenido.setText(textoBienvenida);
 
         }
-        //------------------------------------------------------------------------------------------------------------------------
 
 
         // Agrega el OnClickListener para el botón btnEmocion
