@@ -2,14 +2,13 @@ package com.testeando.botonreconoceraudio;
 
 /*
 TODO List:
-- Convertir el MainActivity en un MENU que tenga botones:
-    Emocion (activity boton escuchar emociones) //HECHO
-    Agenda (activity que muestre toda tu agenda, para que puedas ver a quienes tienes agregado)
-    Explorar (activity que muestre los dispositivos encontrados por bluetooth en una lista, y al darle puedas agregarlo a tu agenda)
-- Mejorar la interfaz de usuario, hacerla más bonita.
+- Mejorar la interfaz de usuario, HAY PARTES QUE SE VEN MUY PEQUEÑAS, PENSAR QUE HACER CON ESO, REALMENTE ESO LO QUE HAREMOS SERÁ MANDARLO A LA WEB
 
--BOTON EMOCION ACTIVITY será lo mismo que mainactivity ahora, quitando lo de poner tu nombre si es nuevo ingreso, que se lo debo de dejar al menu nuevo de mainActivity
+- PENSAR QUE HACEMOS CUANDO EL % DE EMOCION NO ESTÁ CLARO, A LO MEJOR TENEMOS QUE CAMBIAR
+LA API PARA QUE NO SOLO NOS DEVUELVA EL VALOR MAS GRANDE, SI NO QUE CUANDO ESE VALOR NO SEA TAN
+GRANDE NOS DE MAS COSAS O ALGO ASI
 
+- Pagina web (?)
 
 */
 public class TODOList {
