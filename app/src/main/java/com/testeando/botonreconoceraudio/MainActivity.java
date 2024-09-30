@@ -1,27 +1,16 @@
 package com.testeando.botonreconoceraudio;
 
-import android.Manifest;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.speech.RecognizerIntent;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.testeando.botonreconoceraudio.db.DbHelper;
 import com.testeando.botonreconoceraudio.db.DbUsuario;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button botonEmocion;
     private Button botonAgenda;
-    private Button botonExplorar;
+    private Button botonNuevaConver;
     private TextView textviewBienvenido;
 
 
@@ -51,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         botonEmocion = findViewById(R.id.btnEmocion);
         botonAgenda = findViewById(R.id.btnAgenda);
-        botonExplorar = findViewById(R.id.btnExplorar);
+        botonNuevaConver = findViewById(R.id.btnNuevaConver);
         textviewBienvenido = findViewById(R.id.textViewBienvenido);
 
 
@@ -99,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        botonExplorar.setOnClickListener(new View.OnClickListener() {
+        botonNuevaConver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Inicia la actividad BotonEmocionActivity
-                Intent intent = new Intent(MainActivity.this, BotonExplorarActivity.class);
+                Intent intent = new Intent(MainActivity.this, BotonPosiblesConversacionesActivity.class);
                 startActivity(intent);
             }
         });

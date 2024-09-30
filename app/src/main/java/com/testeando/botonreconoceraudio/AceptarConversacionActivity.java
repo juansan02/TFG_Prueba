@@ -37,9 +37,10 @@ public class AceptarConversacionActivity extends AppCompatActivity {
         buttonSi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Iniciar MenuConversacionActivity
-                Intent menuIntent = new Intent(AceptarConversacionActivity.this, MenuConversacionActivity.class);
-                startActivity(menuIntent);
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("INICIAR_CONVERSACION", true); // El usuario dijo "Sí"
+                resultIntent.putExtra("NOMBRE_CONTACTO", nombreContacto); // Pasamos el nombre del contacto
+                setResult(RESULT_OK, resultIntent);
                 finish(); // Finalizar la actividad actual
             }
         });
@@ -47,11 +48,14 @@ public class AceptarConversacionActivity extends AppCompatActivity {
         buttonNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Implementar temporizador interno
-                evitarRepetirConsulta();
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("INICIAR_CONVERSACION", false); // El usuario dijo "No"
+                setResult(RESULT_OK, resultIntent);
                 finish(); // Finalizar la actividad actual
             }
         });
+
+
     }
 
     private void evitarRepetirConsulta() {

@@ -51,12 +51,12 @@
 
     <!-- Botón Explorar centrado y con espaciado uniforme -->
     <Button
-        android:id="@+id/btnExplorar"
+        android:id="@+id/btnNuevaConver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@drawable/button_background"
-        android:text="@string/btn_explorar"
+        android:text="NuevaConver"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
