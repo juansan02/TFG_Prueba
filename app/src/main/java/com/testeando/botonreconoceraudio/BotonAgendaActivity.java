@@ -1,14 +1,12 @@
 package com.testeando.botonreconoceraudio;
 
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +18,6 @@ import androidx.wear.widget.WearableRecyclerView;
 import com.testeando.botonreconoceraudio.adapters.AgendaAdapter;
 import com.testeando.botonreconoceraudio.db.DbAgenda;
 import com.testeando.botonreconoceraudio.models.Contacto;
-import com.testeando.botonreconoceraudio.utils.Temporizador; // Importa la clase Temporizador
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +28,7 @@ public class BotonAgendaActivity extends AppCompatActivity {
     private AgendaAdapter agendaAdapter;
     private DbAgenda dbAgenda;
     private TextView textViewNoContactos;
-    private BluetoothScanner bluetoothScanner;
-    private List<String> macsEncontradas;
-    private Temporizador temporizador; // Instancia de Temporizador
+    private Button botonExplorar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,20 +44,20 @@ public class BotonAgendaActivity extends AppCompatActivity {
         wearableRecyclerView = findViewById(R.id.wearableRecyclerView);
         textViewNoContactos = findViewById(R.id.textViewNoContactos);
         dbAgenda = new DbAgenda(this);
-        macsEncontradas = new ArrayList<>();
 
+        botonExplorar = findViewById(R.id.btnExplorar);
         wearableRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Inicializar el temporizador
-        temporizador = new Temporizador(this);
-
-        // Crear el BluetoothScanner
-        bluetoothScanner = new BluetoothScanner(this, receiver, new ArrayList<>(), macsEncontradas);
-
-        // Iniciar el escaneo de dispositivos
-        bluetoothScanner.iniciarEscaneo();
-
         cargarContactos();
+
+        botonExplorar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Inicia la actividad BotonEmocionActivity
+                Intent intent = new Intent(BotonAgendaActivity.this, BotonExplorarActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -102,44 +97,9 @@ public class BotonAgendaActivity extends AppCompatActivity {
         wearableRecyclerView.setVisibility(View.VISIBLE);
     }
 
-    // BroadcastReceiver para manejar los dispositivos encontrados
-    private final BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                if (device != null) {
-                    String dispositivoMAC = device.getAddress();
-                    macsEncontradas.add(dispositivoMAC);
-
-                    // Obtener el contacto asociado a la dirección MAC
-                    Contacto contacto = dbAgenda.getContactoByMac(dispositivoMAC);
-                    if (contacto != null) {
-                        String nombreContacto = contacto.getNombreContacto();
-
-                        // Verificar si se debe preguntar
-                        if (!temporizador.getNoPreguntar()) {
-                            // Iniciar AceptarConversacionActivity con el nombre y MAC del contacto
-                            Intent aceptarIntent = new Intent(context, AceptarConversacionActivity.class);
-                            aceptarIntent.putExtra("NOMBRE_CONTACTO", nombreContacto);
-                            aceptarIntent.putExtra("MAC_DISPOSITIVO", dispositivoMAC);
-                            startActivity(aceptarIntent);
-
-                            // Iniciar el temporizador aquí después de preguntar
-                            temporizador.iniciarTemporizador(() -> {
-                                // Aquí puedes agregar lógica adicional si lo deseas
-                            });
-                        }
-                    }
-                }
-            }
-        }
-    };
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        bluetoothScanner.detenerEscaneo();
+        // Aquí se eliminaron las operaciones de escaneo de Bluetooth
     }
 }

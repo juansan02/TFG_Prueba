@@ -37,13 +37,13 @@ public class AceptarConversacionActivity extends AppCompatActivity {
         buttonSi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Iniciar MenuConversacionActivity
+                // Iniciar MenuConversacionActivity y pasar el nombre del contacto
                 Intent menuIntent = new Intent(AceptarConversacionActivity.this, MenuConversacionActivity.class);
+                menuIntent.putExtra("NOMBRE_CONTACTO", nombreContacto); // Pasar el nombre del contacto
                 startActivity(menuIntent);
                 finish(); // Finalizar la actividad actual
             }
         });
-
         buttonNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

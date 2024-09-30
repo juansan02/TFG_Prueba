@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button botonEmocion;
     private Button botonAgenda;
-    private Button botonExplorar;
+    private Button botonNuevaConver;
     private TextView textviewBienvenido;
 
 
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         botonEmocion = findViewById(R.id.btnEmocion);
         botonAgenda = findViewById(R.id.btnAgenda);
-        botonExplorar = findViewById(R.id.btnExplorar);
+        botonNuevaConver = findViewById(R.id.btnNuevaConver);
         textviewBienvenido = findViewById(R.id.textViewBienvenido);
 
 
@@ -99,11 +99,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        botonExplorar.setOnClickListener(new View.OnClickListener() {
+        botonNuevaConver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Inicia la actividad BotonEmocionActivity
-                Intent intent = new Intent(MainActivity.this, BotonExplorarActivity.class);
+                Intent intent = new Intent(MainActivity.this, PosiblesConversacionesActivity.class);
                 startActivity(intent);
             }
         });
