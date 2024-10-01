@@ -75,7 +75,7 @@ public class BotonPosiblesConversacionesActivity extends AppCompatActivity {
         actualizarRecyclerView();
     }
 
-    // BroadcastReceiver para manejar los dispositivos encontrados
+    // BroadcastReceiver para manejar los dispositivos encontrados, he cambiado para que funcione
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
