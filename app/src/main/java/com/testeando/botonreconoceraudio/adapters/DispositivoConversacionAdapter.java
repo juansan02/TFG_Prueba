@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.testeando.botonreconoceraudio.AceptarConversacionActivity;
+import com.testeando.botonreconoceraudio.BotonPosiblesConversacionesActivity;
 import com.testeando.botonreconoceraudio.R;
 import com.testeando.botonreconoceraudio.db.DbAgenda;
 import com.testeando.botonreconoceraudio.models.Contacto;
@@ -55,8 +56,12 @@ public class DispositivoConversacionAdapter extends RecyclerView.Adapter<Disposi
             Intent intent = new Intent(context, AceptarConversacionActivity.class);
             intent.putExtra("NOMBRE_CONTACTO", nombreContacto); // Enviar nombre del contacto
             intent.putExtra("MAC_DISPOSITIVO", mac); // Enviar MAC del dispositivo
-            context.startActivity(intent);
+            // Utilizar el contexto de la actividad que invocó el adapter
+            if (context instanceof BotonPosiblesConversacionesActivity) {
+                ((BotonPosiblesConversacionesActivity) context).startActivityForResult(intent, 1);
+            }
         });
+
     }
 
     @Override

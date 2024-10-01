@@ -144,6 +144,7 @@ public class BotonPosiblesConversacionesActivity extends AppCompatActivity {
         }
     }
 
+
     private void actualizarRecyclerView() {
         if (dispositivoAdapter == null) {
             dispositivoAdapter = new DispositivoConversacionAdapter(dispositivosEncontrados, macsEncontradas, this);

@@ -8,21 +8,12 @@
     tools:context=".MenuConversacionActivity">
 
     <TextView
-        android:id="@+id/textViewTitulo"
+        android:id="@+id/textViewTituloConver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="MENU CONVERSACION"
+        android:text=""
+        android:layout_marginTop="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewNombreContacto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:text="TextView"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitulo"
-        tools:layout_editor_absoluteX="41dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,11 +1,12 @@
 package com.testeando.botonreconoceraudio;
 
-// Importaciones necesarias
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -23,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BotonExplorarActivity extends AppCompatActivity {
+
+    private static final String TAG = "BotonExplorarActivity"; // Tag para los logs
 
     private WearableRecyclerView wearableRecyclerView;
     private DispositivoAdapter dispositivoAdapter;
@@ -53,7 +56,11 @@ public class BotonExplorarActivity extends AppCompatActivity {
         // Crear el BluetoothScanner
         bluetoothScanner = new BluetoothScanner(this, receiver, dispositivosEncontrados, macsEncontradas);
 
+        // Registrar el BroadcastReceiver para dispositivos encontrados
+        registerReceiver(receiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
+
         // Iniciar escaneo de dispositivos
+        Log.d(TAG, "Iniciando escaneo de dispositivos Bluetooth en onCreate");
         bluetoothScanner.iniciarEscaneo();
 
         // Configurar el botón "Conectar"
@@ -64,7 +71,11 @@ public class BotonExplorarActivity extends AppCompatActivity {
             macsEncontradas.clear();
             dispositivoAdapter.notifyDataSetChanged();
 
+            // Registrar el BroadcastReceiver nuevamente antes de iniciar el escaneo
+            registerReceiver(receiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
+
             // Iniciar escaneo de dispositivos
+            Log.d(TAG, "Botón 'Conectar' presionado. Iniciando escaneo nuevamente.");
             bluetoothScanner.iniciarEscaneo();
         });
     }
@@ -80,9 +91,13 @@ public class BotonExplorarActivity extends AppCompatActivity {
                     String dispositivoNombre = device.getName();
                     String dispositivoMAC = device.getAddress(); // Obtener la dirección MAC
 
+                    Log.d(TAG, "Dispositivo encontrado: " + dispositivoNombre + " - " + dispositivoMAC);
+
                     dispositivosEncontrados.add(dispositivoNombre);
                     macsEncontradas.add(dispositivoMAC); // Agregar la dirección MAC
                     dispositivoAdapter.notifyItemInserted(dispositivosEncontrados.size() - 1);
+                } else {
+                    Log.d(TAG, "Dispositivo sin nombre encontrado o nulo.");
                 }
             }
         }
@@ -91,6 +106,10 @@ public class BotonExplorarActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        bluetoothScanner.detenerEscaneo(); // Detener el escaneo y desregistrar el BroadcastReceiver
+        // Detener el escaneo de Bluetooth
+        if (bluetoothScanner != null) {
+            bluetoothScanner.detenerEscaneo();
+        }
     }
+
 }

@@ -1,13 +1,11 @@
 package com.testeando.botonreconoceraudio;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MenuConversacionActivity extends AppCompatActivity {
 
@@ -19,12 +17,17 @@ public class MenuConversacionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_conversacion);
 
-        textViewNombreContacto = findViewById(R.id.textViewNombreContacto);
-
-        // Obtener el nombre del contacto desde el Intent
         nombreContacto = getIntent().getStringExtra("NOMBRE_CONTACTO");
+        textViewNombreContacto = findViewById(R.id.textViewTituloConver);
 
-        // Mostrar el nombre del contacto en el TextView
-        textViewNombreContacto.setText("Conversación con " + nombreContacto);
+        // Establecer título con el texto en negrita
+        String textoConversacion = String.format("<b>%s</b> %s", getString(R.string.titulo_conversacion), nombreContacto);
+
+        // Aplicar el formato HTML al TextView
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            textViewNombreContacto.setText(Html.fromHtml(textoConversacion, Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            textViewNombreContacto.setText(Html.fromHtml(textoConversacion));
+        }
     }
 }

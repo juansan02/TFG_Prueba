@@ -39,7 +39,7 @@ public class InfoContactoActivity extends AppCompatActivity {
         String numeroConver = "TO DO BD"; // Reemplaza con el valor real
         String vecesBoton = "TO DO BD"; // Reemplaza con el valor real
 
-        TextView textViewInfoContacto = findViewById(R.id.textViewNombreContacto);
+        TextView textViewInfoContacto = findViewById(R.id.textViewTituloConver);
         String formattedName = String.format("<b>%s</b> %s", getString(R.string.text_nombreContacto), contactoNombre);
 
         TextView textViewNumeroConver = findViewById(R.id.textViewNumeroConver);
