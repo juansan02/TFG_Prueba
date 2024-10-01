@@ -43,7 +43,7 @@ public class DbUsuario {
         return existe;
     }
 
-    // Método para obtener el nombre del primer usuario
+    // Método para obtener el nombre del primer usuario, el cual es el unico que hay, es decir, nosotros.
     public String obtenerNombreUsuario() {
         String nombre = null;
         SQLiteDatabase database = dbHelper.getReadableDatabase();

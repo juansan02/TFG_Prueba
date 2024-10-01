@@ -16,4 +16,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnMiniEmocion"
+        android:layout_width="150dp"
+        android:layout_height="90dp"
+        android:background="@drawable/round_button"
+        android:text="@string/btn_grabar_text"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTituloConver"
+        app:layout_constraintVertical_bias="0.177" />
+
+    <Button
+        android:id="@+id/btnAcabarConversacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/button_delete_background"
+        android:text="Terminar"
+        android:textColor="@android:color/white"
+        android:textSize="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnMiniEmocion" />
 </androidx.constraintlayout.widget.ConstraintLayout>

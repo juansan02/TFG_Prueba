@@ -56,6 +56,25 @@ public class DbAgenda extends DbHelper {
         return null; // No encontrado
     }
 
+    // Método para obtener el ID de un contacto por su nombre
+    public Integer getIdContactoByNombre(String nombreContacto) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(DbHelper.TABLE_AGENDA, new String[]{"id_contacto"}, "nombre_contacto = ?", new String[]{nombreContacto}, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int idContacto = cursor.getInt(cursor.getColumnIndexOrThrow("id_contacto"));
+            cursor.close();
+            return idContacto; // Retornar el ID del contacto
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        return null; // No encontrado
+    }
+
+
+
     public void borrarContacto(String nombreContacto) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("t_agenda", "nombre_contacto = ?", new String[]{nombreContacto});

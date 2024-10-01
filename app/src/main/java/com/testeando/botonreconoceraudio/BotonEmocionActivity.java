@@ -41,7 +41,7 @@ public class BotonEmocionActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_RECORD_AUDIO = 1;
     private static final String API_URL = "https://emocionesapi-488b7ed138c5.herokuapp.com/analyze";
     private static final String DEEPL_API_URL = "https://api-free.deepl.com/v2/translate"; // URL de la API de DeepL
-    private static final String DEEPL_API_KEY = "485d376e-2742-4545-a5c4-cc841c5813f5:fx"; // Tu clave de API
+    private static final String DEEPL_API_KEY = "485d376e-2742-4545-a5c4-cc841c5813f5:fx"; // Clave de API
 
     private DbHelper dbHelper;
     private OkHttpClient client;
