@@ -1,12 +1,14 @@
 package com.testeando.botonreconoceraudio.adapters;
 
 import android.content.Context;
+import android.content.Intent; // Importar Intent
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.testeando.botonreconoceraudio.InfoConversacion; // Importar la nueva actividad
 import com.testeando.botonreconoceraudio.R;
 import com.testeando.botonreconoceraudio.models.Conversacion;
 import java.util.List;
@@ -36,6 +38,16 @@ public class ConversacionAdapter extends RecyclerView.Adapter<ConversacionAdapte
 
         // Guardar la ID de la conversación en el TextView invisible
         holder.idConversacion.setText(String.valueOf(conversacion.getId()));
+
+        // Manejar el clic en la conversación
+        holder.itemView.setOnClickListener(v -> {
+            // Obtener el contexto
+            Context context = v.getContext();
+            Intent intent = new Intent(context, InfoConversacion.class);
+            // Pasar el ID de la conversación a la nueva actividad
+            intent.putExtra("id_conversacion", conversacion.getId());
+            context.startActivity(intent);
+        });
     }
 
     @Override

@@ -35,6 +35,8 @@
     <string name="titulo_confirmarBorrado">¿Estás seguro de que deseas borrar este contacto?</string>
     <string name="btn_si">Sí</string>
     <string name="btn_no">No</string>
+    <string name="no_conversaciones">No hay conversaciones con este contacto.</string>
+    <string name="infoconversacion">InfoConversacion</string>
 
 
 </resources>
