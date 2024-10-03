@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.testeando.botonreconoceraudio.db.DbEmocion;
 import com.testeando.botonreconoceraudio.db.DbHelper;
 
 import org.json.JSONArray;
@@ -209,6 +210,16 @@ public class BotonEmocionActivity extends AppCompatActivity {
                     JSONObject jsonResponse = new JSONObject(responseData);
                     String label = jsonResponse.getString("label");
                     double score = jsonResponse.getDouble("score");
+
+                    // Inserta la emoción en la base de datos
+                    DbEmocion dbEmocion = new DbEmocion(BotonEmocionActivity.this);
+                    boolean insertado = dbEmocion.insertarEmocion(999, label, score); //999 significa que no ha sido de una conver, desconocido
+
+                    if (insertado) {
+                        Log.d("DB Insert", "Emoción insertada correctamente: " + label + " con score: " + score);
+                    } else {
+                        Log.e("DB Insert", "Error al insertar la emoción en la base de datos");
+                    }
 
                     // Iniciar ResultadoActivity con la emoción y el score
                     Intent intent = new Intent(BotonEmocionActivity.this, ResultadoActivity.class);

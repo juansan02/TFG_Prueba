@@ -14,6 +14,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.testeando.botonreconoceraudio.db.DbConversacion;
+import com.testeando.botonreconoceraudio.db.DbEmocion;
+
 public class InfoContactoActivity extends AppCompatActivity {
 
     private Button botonConversaciones;
@@ -36,8 +39,12 @@ public class InfoContactoActivity extends AppCompatActivity {
         botonConversaciones = findViewById(R.id.btnConversaciones);
         btnBorrarContacto = findViewById(R.id.btnBorrarContacto);
 
-        String numeroConver = "TO DO BD"; // Reemplaza con el valor real
-        String vecesBoton = "TO DO BD"; // Reemplaza con el valor real
+
+        DbConversacion dbConversacion = new DbConversacion(this);
+        int numeroConver = dbConversacion.contarConversacionesConContacto(contactoNombre);
+
+        DbEmocion dbEmocion = new DbEmocion(this);
+        int vecesBoton = dbEmocion.contarEmocionesConContacto(contactoNombre);
 
         TextView textViewInfoContacto = findViewById(R.id.textViewTituloConver);
         String formattedName = String.format("<b>%s</b> %s", getString(R.string.text_nombreContacto), contactoNombre);
