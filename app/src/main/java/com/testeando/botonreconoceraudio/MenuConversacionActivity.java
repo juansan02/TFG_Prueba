@@ -65,6 +65,11 @@ public class MenuConversacionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu_conversacion);
 
         nombreContacto = getIntent().getStringExtra("NOMBRE_CONTACTO");
+        idConversacion = getIntent().getIntExtra("ID_CONVERSACION", 0); // Obtener el ID de la conversación
+
+        Log.d("MenuConversacionActivity", "ID de la conversación obtenida en onCreate: " + idConversacion);
+
+
         textViewNombreContacto = findViewById(R.id.textViewTituloConver);
         btnMiniEmocion = findViewById(R.id.btnMiniEmocion);
         btnAcabarConversacion = findViewById(R.id.btnAcabarConversacion);
@@ -86,8 +91,6 @@ public class MenuConversacionActivity extends AppCompatActivity {
         // Guardar la conversación en la base de datos aquí
         DbConversacion dbConversacion = new DbConversacion(this);
 
-        idConversacion = dbConversacion.getUltimoIdConversacion() + 1;
-        Log.d("MenuConversacionActivity", "Nuevo ID de conversación: " + idConversacion);
 
 
 
@@ -108,6 +111,7 @@ public class MenuConversacionActivity extends AppCompatActivity {
         btnAcabarConversacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("MenuConversacionActivity", "ID de la conversación antes de finalizar: " + idConversacion);
                 finalizarConversacion();
             }
         });
@@ -289,7 +293,7 @@ public class MenuConversacionActivity extends AppCompatActivity {
 
         if (idContacto != null && nombreUsuario != null) {
             DbConversacion dbConversacion = new DbConversacion(this);
-            boolean conversacionGuardada = dbConversacion.agregarConversacion(idUsuario, idContacto, nombreUsuario, this.nombreContacto, fechaInicio, fechaFin, (int) duracionSegundos);
+            boolean conversacionGuardada = dbConversacion.actualizarConversacion(idConversacion,idUsuario, idContacto, nombreUsuario, this.nombreContacto, fechaInicio, fechaFin, (int) duracionSegundos);
 
             if (conversacionGuardada) {
                 Toast.makeText(this, "Conversación guardada correctamente.", Toast.LENGTH_SHORT).show();

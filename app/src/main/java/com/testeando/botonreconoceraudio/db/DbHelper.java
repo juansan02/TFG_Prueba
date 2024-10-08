@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 7; // Corrección del nombre de la constante
+    private static final int DATABASE_VERSION = 8; // Corrección del nombre de la constante
     private static final String DATABASE_NAME = "appEmocion.db";
     public static final String TABLE_USUARIO = "t_usuario";
     public static final String TABLE_AGENDA = "t_agenda";
@@ -37,11 +37,11 @@ public class DbHelper extends SQLiteOpenHelper {
                 "id_conversacion INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "id_usuario INTEGER," +
                 "id_contacto INTEGER," +
-                "nombre_usuario TEXT NOT NULL," + // Nuevo campo
-                "nombre_contacto TEXT NOT NULL," + // Nuevo campo
-                "fecha_ini DATETIME NOT NULL," +
-                "fecha_fin DATETIME NOT NULL," +
-                "duracion INTEGER NOT NULL," +
+                "nombre_usuario TEXT," + // Nuevo campo
+                "nombre_contacto TEXT," + // Nuevo campo
+                "fecha_ini DATETIME," +
+                "fecha_fin DATETIME," +
+                "duracion INTEGER," +
                 "FOREIGN KEY (id_usuario) REFERENCES " + TABLE_USUARIO + "(id_usuario) ON DELETE CASCADE," +
                 "FOREIGN KEY (id_contacto) REFERENCES " + TABLE_AGENDA + "(id_contacto) ON DELETE CASCADE)");
 

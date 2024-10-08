@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.wear.widget.WearableRecyclerView;
 import com.testeando.botonreconoceraudio.adapters.DispositivoConversacionAdapter;
 import com.testeando.botonreconoceraudio.db.DbAgenda;
+import com.testeando.botonreconoceraudio.db.DbConversacion;
 import com.testeando.botonreconoceraudio.models.Contacto;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,8 @@ public class BotonPosiblesConversacionesActivity extends AppCompatActivity {
     private List<String> dispositivosPendientes; // Nueva lista de dispositivos pendientes
     private int indexDispositivoActual = 0; // Índice para el dispositivo actual
     private Button connectButton; // Botón para reconectar y actualizar
+    private Integer idConversacion; // ID de la conversación
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,9 @@ public class BotonPosiblesConversacionesActivity extends AppCompatActivity {
 
         bluetoothScanner = new BluetoothScanner(this, receiver, dispositivosEncontrados, macsEncontradas);
         bluetoothScanner.iniciarEscaneo();
+
+        DbConversacion dbConversacion = new DbConversacion(this);
+        idConversacion = dbConversacion.getUltimoIdConversacion() + 1;
 
         connectButton = findViewById(R.id.connectButton);
         connectButton.setOnClickListener(new View.OnClickListener() {
@@ -128,11 +134,27 @@ public class BotonPosiblesConversacionesActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK && data != null) {
                 boolean iniciarConversacion = data.getBooleanExtra("INICIAR_CONVERSACION", false);
+                String nombreContacto = data.getStringExtra("NOMBRE_CONTACTO"); // Obtener el nombre del contacto
                 if (iniciarConversacion) {
+                    DbConversacion dbConversacion = new DbConversacion(this);
+
+                    // Log para verificar antes de insertar
+                    Log.d("Conversacion", "Insertando conversación con el contacto: " + nombreContacto);
+
+                    long idConversacion_insertada = dbConversacion.insertarConversacion(nombreContacto, "no_finalizada");
+
+                    // Verificar si la inserción fue exitosa
+                    if (idConversacion_insertada > 0) {
+                        Log.d("Conversacion", "Conversación insertada con éxito. ID: " + idConversacion);
+                    } else {
+                        Log.e("Conversacion", "Error al insertar la conversación.");
+                    }
+
                     // El usuario dijo "Sí", iniciar MenuConversacionActivity
-                    String nombreContacto = data.getStringExtra("NOMBRE_CONTACTO");
+                    nombreContacto = data.getStringExtra("NOMBRE_CONTACTO");
                     Intent menuIntent = new Intent(this, MenuConversacionActivity.class);
                     menuIntent.putExtra("NOMBRE_CONTACTO", nombreContacto);
+                    menuIntent.putExtra("ID_CONVERSACION", idConversacion);
                     startActivity(menuIntent);
                     finish(); // Finalizar esta actividad
                 } else {
@@ -143,6 +165,7 @@ public class BotonPosiblesConversacionesActivity extends AppCompatActivity {
             }
         }
     }
+
 
 
     private void actualizarRecyclerView() {
