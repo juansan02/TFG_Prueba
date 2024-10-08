@@ -4,11 +4,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.testeando.botonreconoceraudio.models.Conversacion;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DbConversacion extends DbHelper {
 
@@ -16,21 +20,39 @@ public class DbConversacion extends DbHelper {
         super(context);
     }
 
-
-    // Método para agregar una conversación con estado "no finalizada"
-    public long insertarConversacion(String nombreContacto, String estado) {
+    // Método para agregar una conversación con estado "no finalizada" y un ID específico
+    public long insertarConversacion(int idConversacion, String nombreContacto, String estado) {
         SQLiteDatabase db = this.getWritableDatabase();
+
+        // Verificar si ya existe una conversación con ese ID
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM t_conversacion WHERE id_conversacion = ?", new String[]{String.valueOf(idConversacion)});
+        cursor.moveToFirst();
+        int count = cursor.getInt(0);
+        cursor.close();
+
+        // Si ya existe, retornar -1 o cualquier otro valor que indique que la inserción no se realizó
+        if (count > 0) {
+            Log.e("Conversacion", "Ya existe una conversación con ID: " + idConversacion);
+            db.close();
+            return -1; // Indica que la inserción no se realizó porque el ID ya existe
+        }
+
         ContentValues values = new ContentValues();
+        String fechaInicio = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
-        values.put("nombre_contacto", nombreContacto); // Insertar solo el nombre del contacto
+        // Inserta el ID de conversación proporcionado
+        values.put("id_conversacion", idConversacion);
+        values.put("nombre_contacto", nombreContacto);
+        values.put("fecha_ini", fechaInicio);
         values.put("fecha_fin", estado); // "no_finalizada"
+        values.put("duracion", 0); // Duración inicial en 0 o el valor que desees
 
-        // No se llenan otros campos, así que se insertan como NULL o con su valor por defecto
         long resultado = db.insert("t_conversacion", null, values);
         db.close();
 
         return resultado; // Retorna el ID de la conversación insertada
     }
+
 
 
     // Método para verificar si hay una conversación no finalizada
@@ -63,6 +85,26 @@ public class DbConversacion extends DbHelper {
         return conversacion;
     }
 
+    // Método para obtener el ID de la conversación no finalizada
+    public int obtenerIdConversacionNoFinalizada() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int idConversacion = -1;
+
+        String query = "SELECT id_conversacion FROM t_conversacion WHERE fecha_fin = 'no_finalizada'";
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            idConversacion = cursor.getInt(cursor.getColumnIndex("id_conversacion"));
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        db.close();
+        return idConversacion; // Retorna -1 si no hay conversación no finalizada
+    }
+
     // Método para agregar una conversación a la base de datos
     public boolean agregarConversacion(int idUsuario, int idContacto, String nombreUsuario, String nombreContacto,
                                        String fechaInicio, String fechaFin, int duracion) {
@@ -83,14 +125,13 @@ public class DbConversacion extends DbHelper {
     }
 
     public boolean actualizarConversacion(int idConversacion, int idUsuario, int idContacto, String nombreUsuario,
-                                       String nombreContacto, String fechaInicio, String fechaFin, int duracion) {
+                                          String nombreContacto, String fechaFin, int duracion) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("id_usuario", idUsuario);
         values.put("id_contacto", idContacto);
         values.put("nombre_usuario", nombreUsuario);
         values.put("nombre_contacto", nombreContacto);
-        values.put("fecha_ini", fechaInicio);
         values.put("fecha_fin", fechaFin);
         values.put("duracion", duracion); // Duración ahora como Integer
 
@@ -100,7 +141,6 @@ public class DbConversacion extends DbHelper {
 
         return resultado > 0; // Retorna true si se actualizó correctamente
     }
-
 
     // Método para contar el número de conversaciones con un contacto
     public int contarConversacionesConContacto(String nombreContacto) {
@@ -141,6 +181,26 @@ public class DbConversacion extends DbHelper {
 
         return listaConversaciones;
     }
+
+    public String obtenerNombreContactoPorId(int idConversacion) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String nombreContacto = null;
+
+        String query = "SELECT nombre_contacto FROM t_conversacion WHERE id_conversacion = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(idConversacion)});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            nombreContacto = cursor.getString(cursor.getColumnIndex("nombre_contacto"));
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return nombreContacto; // Retorna null si no se encuentra el nombre
+    }
+
 
     // Método para obtener el último ID de conversación
     public int getUltimoIdConversacion() {

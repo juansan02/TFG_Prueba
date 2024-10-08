@@ -136,19 +136,10 @@ public class BotonPosiblesConversacionesActivity extends AppCompatActivity {
                 boolean iniciarConversacion = data.getBooleanExtra("INICIAR_CONVERSACION", false);
                 String nombreContacto = data.getStringExtra("NOMBRE_CONTACTO"); // Obtener el nombre del contacto
                 if (iniciarConversacion) {
-                    DbConversacion dbConversacion = new DbConversacion(this);
 
                     // Log para verificar antes de insertar
                     Log.d("Conversacion", "Insertando conversación con el contacto: " + nombreContacto);
 
-                    long idConversacion_insertada = dbConversacion.insertarConversacion(nombreContacto, "no_finalizada");
-
-                    // Verificar si la inserción fue exitosa
-                    if (idConversacion_insertada > 0) {
-                        Log.d("Conversacion", "Conversación insertada con éxito. ID: " + idConversacion);
-                    } else {
-                        Log.e("Conversacion", "Error al insertar la conversación.");
-                    }
 
                     // El usuario dijo "Sí", iniciar MenuConversacionActivity
                     nombreContacto = data.getStringExtra("NOMBRE_CONTACTO");
@@ -174,6 +165,26 @@ public class BotonPosiblesConversacionesActivity extends AppCompatActivity {
             wearableRecyclerView.setAdapter(dispositivoAdapter);
         } else {
             dispositivoAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Verificar si hay conversaciones no finalizadas
+        DbConversacion dbConversacion = new DbConversacion(this);
+        int idConversacion_resumen = dbConversacion.obtenerIdConversacionNoFinalizada(); // Método para obtener el ID de la conversación no finalizada
+
+        Log.d("BotonPosiblesConversaciones", "onResume: idConversacionActual = " + idConversacion_resumen);
+
+        // Aquí solo se inicia la actividad si hay conversaciones no finalizadas
+        if (idConversacion_resumen != -1) { // Si se encontró una conversación no finalizada y la actividad no está activa
+            String nombreContacto = dbConversacion.obtenerNombreContactoPorId(idConversacion_resumen); // Método para obtener el nombre del contacto
+            Intent menuIntent = new Intent(this, MenuConversacionActivity.class);
+            menuIntent.putExtra("NOMBRE_CONTACTO", nombreContacto);
+            menuIntent.putExtra("ID_CONVERSACION", idConversacion_resumen);
+            Log.d("BotonPosiblesConversaciones", "Iniciando MenuConversacionActivity desde onResume con ID: " + idConversacion_resumen);
+            startActivity(menuIntent);
         }
     }
 

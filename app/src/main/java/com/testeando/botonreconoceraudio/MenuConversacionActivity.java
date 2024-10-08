@@ -70,6 +70,19 @@ public class MenuConversacionActivity extends AppCompatActivity {
         Log.d("MenuConversacionActivity", "ID de la conversación obtenida en onCreate: " + idConversacion);
 
 
+        DbConversacion dbConversacion = new DbConversacion(this);
+
+        long resultado = dbConversacion.insertarConversacion(idConversacion, nombreContacto, "no_finalizada");
+
+        // Verificar si la inserción fue exitosa
+        if (resultado > 0) {
+            Log.d("Conversacion", "Conversación insertada con éxito. ID: " + idConversacion);
+        } else {
+            Log.e("Conversacion", "Error al insertar la conversación.");
+        }
+
+
+
         textViewNombreContacto = findViewById(R.id.textViewTituloConver);
         btnMiniEmocion = findViewById(R.id.btnMiniEmocion);
         btnAcabarConversacion = findViewById(R.id.btnAcabarConversacion);
@@ -86,10 +99,6 @@ public class MenuConversacionActivity extends AppCompatActivity {
         // Iniciar el temporizador de la conversación
         tiempoInicio = System.currentTimeMillis();
 
-
-
-        // Guardar la conversación en la base de datos aquí
-        DbConversacion dbConversacion = new DbConversacion(this);
 
 
 
@@ -293,7 +302,7 @@ public class MenuConversacionActivity extends AppCompatActivity {
 
         if (idContacto != null && nombreUsuario != null) {
             DbConversacion dbConversacion = new DbConversacion(this);
-            boolean conversacionGuardada = dbConversacion.actualizarConversacion(idConversacion,idUsuario, idContacto, nombreUsuario, this.nombreContacto, fechaInicio, fechaFin, (int) duracionSegundos);
+            boolean conversacionGuardada = dbConversacion.actualizarConversacion(idConversacion,idUsuario, idContacto, nombreUsuario, this.nombreContacto, fechaFin, (int) duracionSegundos);
 
             if (conversacionGuardada) {
                 Toast.makeText(this, "Conversación guardada correctamente.", Toast.LENGTH_SHORT).show();
