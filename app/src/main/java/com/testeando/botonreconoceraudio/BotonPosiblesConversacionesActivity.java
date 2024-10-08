@@ -111,6 +111,15 @@ public class BotonPosiblesConversacionesActivity extends AppCompatActivity {
     };
 
     private void procesarSiguienteDispositivo() {
+        // Verificar si hay una conversación no finalizada
+        DbConversacion dbConversacion = new DbConversacion(this);
+        int idConversacionResumen = dbConversacion.obtenerIdConversacionNoFinalizada(); // Método para obtener el ID de la conversación no finalizada
+
+        if (idConversacionResumen != -1) {
+            Log.d("BotonPosiblesConversaciones", "Hay una conversación no finalizada con ID: " + idConversacionResumen);
+            // Si hay una conversación no finalizada, no iniciar AceptarConversacionActivity
+            return;
+        }
         if (indexDispositivoActual < dispositivosPendientes.size()) {
             String macDispositivo = dispositivosPendientes.get(indexDispositivoActual);
             Contacto contacto = dbAgenda.getContactoByMac(macDispositivo);
