@@ -53,6 +53,23 @@ public class DbConversacion extends DbHelper {
         return resultado; // Retorna el ID de la conversación insertada
     }
 
+    public String obtenerFechaInicioPorId(int idConversacion) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String fechaInicio = null;
+
+        Cursor cursor = db.rawQuery("SELECT fecha_ini FROM t_conversacion WHERE id_conversacion = ?", new String[]{String.valueOf(idConversacion)});
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                fechaInicio = cursor.getString(cursor.getColumnIndex("fecha_ini"));
+            }
+            cursor.close();
+        }
+
+        db.close();
+        return fechaInicio;
+    }
+
 
 
     // Método para verificar si hay una conversación no finalizada

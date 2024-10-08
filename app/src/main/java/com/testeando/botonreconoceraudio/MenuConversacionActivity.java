@@ -29,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -286,23 +287,42 @@ public class MenuConversacionActivity extends AppCompatActivity {
 
     private void finalizarConversacion() {
         long tiempoFin = System.currentTimeMillis();
-        long duracionSegundos = (tiempoFin - tiempoInicio) / 1000;
 
+        // Formato de fecha
         SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        String fechaInicio = formatoFecha.format(new Date(tiempoInicio));
-        String fechaFin = formatoFecha.format(new Date(tiempoFin));
+        String fechaFinString = formatoFecha.format(new Date(tiempoFin));
+
+        // Obtener la fecha de inicio desde la base de datos
+        DbConversacion dbConversacion = new DbConversacion(this);
+        String fechaInicioString = dbConversacion.obtenerFechaInicioPorId(idConversacion);
+        long duracionSegundos = 0;
+
+        if (fechaInicioString != null) {
+            try {
+                // Convertir las fechas a objetos Date
+                Date fechaInicio = formatoFecha.parse(fechaInicioString);
+                Date fechaFin = formatoFecha.parse(fechaFinString);
+
+                // Calcular la duración en segundos
+                duracionSegundos = (fechaFin.getTime() - fechaInicio.getTime()) / 1000; // Duración en segundos
+            } catch (ParseException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Error al parsear las fechas.", Toast.LENGTH_SHORT).show();
+                return; // Salir si hay un error
+            }
+        } else {
+            Toast.makeText(this, "No se encontró la fecha de inicio.", Toast.LENGTH_SHORT).show();
+            return; // Salir si no se encuentra la fecha
+        }
 
         int idUsuario = 1; // Cambia esto por el ID del usuario real
-
         DbUsuario dbUsuario = new DbUsuario(this);
         String nombreUsuario = dbUsuario.obtenerNombreUsuario();
 
-        DbAgenda dbAgenda = new DbAgenda(this);
-        Integer idContacto = dbAgenda.getIdContactoByNombre(this.nombreContacto);
+        Integer idContacto = new DbAgenda(this).getIdContactoByNombre(this.nombreContacto);
 
         if (idContacto != null && nombreUsuario != null) {
-            DbConversacion dbConversacion = new DbConversacion(this);
-            boolean conversacionGuardada = dbConversacion.actualizarConversacion(idConversacion,idUsuario, idContacto, nombreUsuario, this.nombreContacto, fechaFin, (int) duracionSegundos);
+            boolean conversacionGuardada = dbConversacion.actualizarConversacion(idConversacion, idUsuario, idContacto, nombreUsuario, this.nombreContacto, fechaFinString, (int) duracionSegundos);
 
             if (conversacionGuardada) {
                 Toast.makeText(this, "Conversación guardada correctamente.", Toast.LENGTH_SHORT).show();
@@ -320,4 +340,5 @@ public class MenuConversacionActivity extends AppCompatActivity {
         // Finalizar la actividad
         finish();
     }
+
 }
