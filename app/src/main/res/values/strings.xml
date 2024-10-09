@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">AskEmotions</string>
     <string name="btn_basico">Btn</string>
-    <string name="btn_grabar_text">CAMBIAME</string>
+    <string name="btn_grabar_text">Emoción</string>
     <string name="titulo_emocion">Emociones</string>
-    <string name="titulo_bienvenido">Bienvenido, %1$s!</string>
+    <string name="titulo_bienvenido">Hola, %1$s!</string>
     <string name="titulo_conversacion">Conversacion con: </string>
     <string name="btn_emociones">Emociones</string>
     <string name="btn_agenda">Agenda</string>
@@ -37,6 +37,7 @@
     <string name="btn_no">No</string>
     <string name="no_conversaciones">No hay conversaciones con este contacto.</string>
     <string name="infoconversacion">InfoConversacion</string>
+    <string name="text_askeotions">ASKEMOTIONS</string>
 
 
 </resources>

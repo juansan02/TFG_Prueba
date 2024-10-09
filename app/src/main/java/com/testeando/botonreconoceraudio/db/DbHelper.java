@@ -8,7 +8,8 @@ import androidx.annotation.Nullable;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 12; // Corrección del nombre de la constante
+    private static final int DATABASE_VERSION = 15
+            ; // Corrección del nombre de la constante
     private static final String DATABASE_NAME = "appEmocion.db";
     public static final String TABLE_USUARIO = "t_usuario";
     public static final String TABLE_AGENDA = "t_agenda";
