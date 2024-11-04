@@ -37,17 +37,14 @@ public class AgregarContactoActivity extends AppCompatActivity {
 
         // Mostrar el nombre y la MAC del dispositivo en los TextViews correspondientes con HTML
         TextView textViewNombreDispositivo = findViewById(R.id.textViewNombreDispositivo);
-        TextView textViewMacDispositivo = findViewById(R.id.textViewMacDispositivo);
 
         String formattedNombre = String.format("<b>%s</b> %s", getString(R.string.text_nombreDispositivo), nombreDispositivo);
         String formattedMac = String.format("<b>%s</b> %s", getString(R.string.text_macDispositivo), macDispositivo);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             textViewNombreDispositivo.setText(Html.fromHtml(formattedNombre, Html.FROM_HTML_MODE_LEGACY));
-            textViewMacDispositivo.setText(Html.fromHtml(formattedMac, Html.FROM_HTML_MODE_LEGACY));
         } else {
             textViewNombreDispositivo.setText(Html.fromHtml(formattedNombre));
-            textViewMacDispositivo.setText(Html.fromHtml(formattedMac));
         }
 
         // Configurar el botón

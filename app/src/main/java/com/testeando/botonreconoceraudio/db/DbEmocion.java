@@ -41,4 +41,23 @@ public class DbEmocion extends DbHelper {
         return totalEmociones;
     }
 
+    // Método para contar las emociones asociadas a una conversación específica
+    public int contarEmocionesPorConversacion(int idConversacion) {
+        int totalEmociones = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT COUNT(*) FROM t_emocion WHERE id_conversacion = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(idConversacion)});
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                totalEmociones = cursor.getInt(0); // Obtener el total de emociones
+            }
+            cursor.close();
+        }
+        db.close();
+
+        return totalEmociones;
+    }
+
+
 }

@@ -219,6 +219,8 @@ public class DbConversacion extends DbHelper {
     }
 
 
+
+
     // Método para obtener el último ID de conversación
     public int getUltimoIdConversacion() {
         int ultimoId = 0;

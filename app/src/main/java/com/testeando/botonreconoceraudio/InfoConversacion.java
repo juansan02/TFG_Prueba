@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.testeando.botonreconoceraudio.db.DbConversacion;
+import com.testeando.botonreconoceraudio.db.DbEmocion;
 import com.testeando.botonreconoceraudio.models.Conversacion;
 
 public class InfoConversacion extends AppCompatActivity {
@@ -26,9 +27,12 @@ public class InfoConversacion extends AppCompatActivity {
             Conversacion conversacion = dbConversacion.obtenerConversacionPorId(idConversacion);
             if (conversacion != null) {
                 // Muestra la información de la conversación
+                DbEmocion dbEmocion = new DbEmocion(this);
+                int numeroEmociones = dbEmocion.contarEmocionesPorConversacion(idConversacion);
                 textViewInfo.setText("ID: " + conversacion.getId() + "\n" +
                         "Fecha: " + conversacion.getFechaInicio() + "\n" +
-                        "Duración: " + conversacion.getDuracion() + " segundos");
+                        "Duración: " + conversacion.getDuracion() + " segundos" + "\n" +
+                        "Numero de asistencias \nsolicitadas: " + numeroEmociones);
             } else {
                 textViewInfo.setText("No se encontró la conversación.");
             }

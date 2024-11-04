@@ -44,7 +44,7 @@ public class DispositivoAdapter extends RecyclerView.Adapter<DispositivoAdapter.
         String dispositivo = dispositivos.get(position);
         String mac = macs.get(position);
 
-        holder.nombreContacto.setText(dispositivo + " (" + mac + ")");
+        holder.nombreContacto.setText(dispositivo);
 
         // Manejar el clic en el item
         holder.itemView.setOnClickListener(v -> {
