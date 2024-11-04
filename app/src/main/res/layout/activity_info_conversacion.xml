@@ -18,6 +18,19 @@
         app:layout_constraintTop_toTopOf="parent"
         android:textSize="16sp"/>
 
+    <Button
+        android:id="@+id/btnEmociones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/button_background"
+        android:text="@string/btn_emocionesregistro"
+        android:textColor="@android:color/white"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewInfo" />
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"

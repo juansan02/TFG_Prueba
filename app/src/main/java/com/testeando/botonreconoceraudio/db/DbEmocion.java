@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.HashMap;
+
 public class DbEmocion extends DbHelper {
 
     public DbEmocion(Context context) {
@@ -57,6 +59,21 @@ public class DbEmocion extends DbHelper {
         db.close();
 
         return totalEmociones;
+    }
+
+    public HashMap<String, Integer> obtenerEmocionesPorConversacion(int idConversacion) {
+        HashMap<String, Integer> emociones = new HashMap<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT tipo_emocion, COUNT(*) as conteo FROM t_emocion WHERE id_conversacion = ? GROUP BY tipo_emocion";
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(idConversacion)});
+        while (cursor.moveToNext()) {
+            String tipoEmocion = cursor.getString(cursor.getColumnIndex("tipo_emocion"));
+            int conteo = cursor.getInt(cursor.getColumnIndex("conteo"));
+            emociones.put(tipoEmocion, conteo);
+        }
+        cursor.close();
+        return emociones;
     }
 
 
