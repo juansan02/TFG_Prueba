@@ -36,7 +36,7 @@
     <string name="btn_si">Sí</string>
     <string name="btn_no">No</string>
     <string name="no_conversaciones">No hay conversaciones con este contacto.</string>
-    <string name="infoconversacion">InfoConversacion</string>
+    <string name="infoconversacion">Información \nConversacion</string>
     <string name="text_askeotions">BIENVENIDO A ASKEMOTIONS</string>
     <string name="btn_emocionesregistro">Emociones</string>
     <string name="text_registro_emociones">Registro de Emociones</string>

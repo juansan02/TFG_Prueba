@@ -38,8 +38,7 @@ public class InfoConversacion extends AppCompatActivity {
                 // Muestra la información de la conversación
                 DbEmocion dbEmocion = new DbEmocion(this);
                 int numeroEmociones = dbEmocion.contarEmocionesPorConversacion(idConversacion);
-                textViewInfo.setText("ID: " + conversacion.getId() + "\n" +
-                        "Fecha: " + conversacion.getFechaInicio() + "\n" +
+                textViewInfo.setText("Fecha: " + conversacion.getFechaInicio() + "\n" +
                         "Duración: " + conversacion.getDuracion() + " segundos" + "\n" +
                         "Numero de asistencias \nsolicitadas: " + numeroEmociones);
             } else {
