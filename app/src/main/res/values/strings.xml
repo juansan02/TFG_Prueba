@@ -40,6 +40,7 @@
     <string name="text_askeotions">BIENVENIDO A ASKEMOTIONS</string>
     <string name="btn_emocionesregistro">Emociones</string>
     <string name="text_registro_emociones">Registro de Emociones</string>
+    <string name="btn_conversacion">Conversación</string>
 
 
 </resources>
