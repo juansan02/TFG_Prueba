@@ -20,37 +20,33 @@ public class DbConversacion extends DbHelper {
         super(context);
     }
 
-    // Método para agregar una conversación con estado "no finalizada" y un ID específico
     public long insertarConversacion(int idConversacion, String nombreContacto, String estado) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Verificar si ya existe una conversación con ese ID
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM t_conversacion WHERE id_conversacion = ?", new String[]{String.valueOf(idConversacion)});
         cursor.moveToFirst();
         int count = cursor.getInt(0);
         cursor.close();
 
-        // Si ya existe, retornar -1 o cualquier otro valor que indique que la inserción no se realizó
         if (count > 0) {
             Log.e("Conversacion", "Ya existe una conversación con ID: " + idConversacion);
             db.close();
-            return -1; // Indica que la inserción no se realizó porque el ID ya existe
+            return -1;
         }
 
         ContentValues values = new ContentValues();
         String fechaInicio = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
-        // Inserta el ID de conversación proporcionado
         values.put("id_conversacion", idConversacion);
         values.put("nombre_contacto", nombreContacto);
         values.put("fecha_ini", fechaInicio);
-        values.put("fecha_fin", estado); // "no_finalizada"
-        values.put("duracion", 0); // Duración inicial en 0 o el valor que desees
+        values.put("fecha_fin", estado);
+        values.put("duracion", 0);
 
         long resultado = db.insert("t_conversacion", null, values);
         db.close();
 
-        return resultado; // Retorna el ID de la conversación insertada
+        return resultado;
     }
 
     public String obtenerFechaInicioPorId(int idConversacion) {
@@ -72,7 +68,7 @@ public class DbConversacion extends DbHelper {
 
 
 
-    // Método para verificar si hay una conversación no finalizada
+
     public Conversacion obtenerConversacionNoFinalizada() {
         SQLiteDatabase db = this.getReadableDatabase();
         Conversacion conversacion = null;
@@ -102,7 +98,6 @@ public class DbConversacion extends DbHelper {
         return conversacion;
     }
 
-    // Método para obtener el ID de la conversación no finalizada
     public int obtenerIdConversacionNoFinalizada() {
         SQLiteDatabase db = this.getReadableDatabase();
         int idConversacion = -1;
@@ -119,10 +114,9 @@ public class DbConversacion extends DbHelper {
         }
 
         db.close();
-        return idConversacion; // Retorna -1 si no hay conversación no finalizada
+        return idConversacion;
     }
 
-    // Método para agregar una conversación a la base de datos
     public boolean agregarConversacion(int idUsuario, int idContacto, String nombreUsuario, String nombreContacto,
                                        String fechaInicio, String fechaFin, int duracion) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -133,12 +127,12 @@ public class DbConversacion extends DbHelper {
         values.put("nombre_contacto", nombreContacto);
         values.put("fecha_ini", fechaInicio);
         values.put("fecha_fin", fechaFin);
-        values.put("duracion", duracion); // Duración ahora como Integer
+        values.put("duracion", duracion);
 
         long resultado = db.insert(TABLE_CONVERSACION, null, values);
         db.close();
 
-        return resultado != -1; // Retorna true si se insertó correctamente
+        return resultado != -1;
     }
 
     public boolean actualizarConversacion(int idConversacion, int idUsuario, int idContacto, String nombreUsuario,
@@ -150,16 +144,15 @@ public class DbConversacion extends DbHelper {
         values.put("nombre_usuario", nombreUsuario);
         values.put("nombre_contacto", nombreContacto);
         values.put("fecha_fin", fechaFin);
-        values.put("duracion", duracion); // Duración ahora como Integer
+        values.put("duracion", duracion);
 
-        // Actualizar la conversación existente con el idConversacion proporcionado
         int resultado = db.update(TABLE_CONVERSACION, values, "id_conversacion = ?", new String[]{String.valueOf(idConversacion)});
         db.close();
 
-        return resultado > 0; // Retorna true si se actualizó correctamente
+        return resultado > 0;
     }
 
-    // Método para contar el número de conversaciones con un contacto
+
     public int contarConversacionesConContacto(String nombreContacto) {
         int count = 0;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -167,7 +160,7 @@ public class DbConversacion extends DbHelper {
         Cursor cursor = db.rawQuery(query, new String[]{nombreContacto});
 
         if (cursor.moveToFirst()) {
-            count = cursor.getInt(0); // Obtener el valor de la cuenta
+            count = cursor.getInt(0);
         }
         cursor.close();
         db.close();
@@ -175,7 +168,6 @@ public class DbConversacion extends DbHelper {
         return count;
     }
 
-    // Método para obtener las conversaciones con un contacto específico
     public List<Conversacion> obtenerConversacionesConContacto(String nombreContacto) {
         List<Conversacion> listaConversaciones = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -215,13 +207,13 @@ public class DbConversacion extends DbHelper {
         }
         db.close();
 
-        return nombreContacto; // Retorna null si no se encuentra el nombre
+        return nombreContacto;
     }
 
 
 
 
-    // Método para obtener el último ID de conversación
+
     public int getUltimoIdConversacion() {
         int ultimoId = 0;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -241,7 +233,7 @@ public class DbConversacion extends DbHelper {
         return ultimoId == 0 ? 0 : ultimoId;
     }
 
-    // Método para obtener la conversación por ID
+
     public Conversacion obtenerConversacionPorId(int idConversacion) {
         SQLiteDatabase db = this.getReadableDatabase();
         Conversacion conversacion = null;
@@ -266,7 +258,7 @@ public class DbConversacion extends DbHelper {
             String fechaFin = cursor.getString(cursor.getColumnIndex("fecha_fin"));
             int duracion = cursor.getInt(cursor.getColumnIndex("duracion"));
 
-            // Crear objeto Conversacion con todos los campos
+
             conversacion = new Conversacion(id, idUsuario, idContacto, nombreUsuario, nombreContacto, fechaInicio, fechaFin, duracion);
 
             cursor.close();

@@ -30,10 +30,10 @@ public class BotonPosiblesConversacionesActivity extends AppCompatActivity {
     private BluetoothScanner bluetoothScanner;
     private List<String> dispositivosEncontrados;
     private List<String> macsEncontradas;
-    private List<String> dispositivosPendientes; // Nueva lista de dispositivos pendientes
-    private int indexDispositivoActual = 0; // Índice para el dispositivo actual
-    private Button connectButton; // Botón para reconectar y actualizar
-    private Integer idConversacion; // ID de la conversación
+    private List<String> dispositivosPendientes;
+    private int indexDispositivoActual = 0;
+    private Button connectButton;
+    private Integer idConversacion;
 
 
     @Override
@@ -45,7 +45,7 @@ public class BotonPosiblesConversacionesActivity extends AppCompatActivity {
         dbAgenda = new DbAgenda(this);
         dispositivosEncontrados = new ArrayList<>();
         macsEncontradas = new ArrayList<>();
-        dispositivosPendientes = new ArrayList<>(); // Inicializamos la lista de pendientes
+        dispositivosPendientes = new ArrayList<>();
         wearableRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         bluetoothScanner = new BluetoothScanner(this, receiver, dispositivosEncontrados, macsEncontradas);
@@ -58,30 +58,27 @@ public class BotonPosiblesConversacionesActivity extends AppCompatActivity {
         connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                actualizarEscaneo(); // Al hacer clic, reiniciamos el escaneo y la lista
+                actualizarEscaneo();
             }
         });
     }
 
-    // Método para actualizar el escaneo
     private void actualizarEscaneo() {
-        // Detener el escaneo anterior
         bluetoothScanner.detenerEscaneo();
 
-        // Limpiar listas de dispositivos encontrados
+
         dispositivosEncontrados.clear();
         macsEncontradas.clear();
         dispositivosPendientes.clear();
         indexDispositivoActual = 0; // Reiniciar índice
 
-        // Reiniciar escaneo
+
         bluetoothScanner.iniciarEscaneo();
 
-        // Actualizar la lista en el RecyclerView
+
         actualizarRecyclerView();
     }
 
-    // BroadcastReceiver para manejar los dispositivos encontrados, he cambiado para que funcione
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -90,16 +87,15 @@ public class BotonPosiblesConversacionesActivity extends AppCompatActivity {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (device != null) {
                     String dispositivoMAC = device.getAddress();
-                    // Comprobar si el dispositivo ya ha sido agregado
+
                     if (!macsEncontradas.contains(dispositivoMAC)) {
-                        // Obtener el contacto asociado a la dirección MAC
+
                         Contacto contacto = dbAgenda.getContactoByMac(dispositivoMAC);
                         if (contacto != null) {
                             macsEncontradas.add(dispositivoMAC);
                             dispositivosEncontrados.add(device.getName() != null ? device.getName() : "Desconocido");
-                            dispositivosPendientes.add(dispositivoMAC); // Agregar a la lista de pendientes
+                            dispositivosPendientes.add(dispositivoMAC);
                             if (dispositivosPendientes.size() == 1) {
-                                // Solo iniciar la primera vez
                                 procesarSiguienteDispositivo();
                             }
                         }
@@ -111,13 +107,12 @@ public class BotonPosiblesConversacionesActivity extends AppCompatActivity {
     };
 
     private void procesarSiguienteDispositivo() {
-        // Verificar si hay una conversación no finalizada
         DbConversacion dbConversacion = new DbConversacion(this);
-        int idConversacionResumen = dbConversacion.obtenerIdConversacionNoFinalizada(); // Método para obtener el ID de la conversación no finalizada
+        int idConversacionResumen = dbConversacion.obtenerIdConversacionNoFinalizada();
 
         if (idConversacionResumen != -1) {
             Log.d("BotonPosiblesConversaciones", "Hay una conversación no finalizada con ID: " + idConversacionResumen);
-            // Si hay una conversación no finalizada, no iniciar AceptarConversacionActivity
+
             return;
         }
         if (indexDispositivoActual < dispositivosPendientes.size()) {
@@ -134,7 +129,7 @@ public class BotonPosiblesConversacionesActivity extends AppCompatActivity {
         Intent aceptarIntent = new Intent(this, AceptarConversacionActivity.class);
         aceptarIntent.putExtra("NOMBRE_CONTACTO", nombreContacto);
         aceptarIntent.putExtra("MAC_DISPOSITIVO", dispositivoMAC);
-        startActivityForResult(aceptarIntent, 1); // Iniciar para recibir resultado
+        startActivityForResult(aceptarIntent, 1);
     }
 
     @Override
@@ -143,22 +138,21 @@ public class BotonPosiblesConversacionesActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK && data != null) {
                 boolean iniciarConversacion = data.getBooleanExtra("INICIAR_CONVERSACION", false);
-                String nombreContacto = data.getStringExtra("NOMBRE_CONTACTO"); // Obtener el nombre del contacto
+                String nombreContacto = data.getStringExtra("NOMBRE_CONTACTO");
                 if (iniciarConversacion) {
 
-                    // Log para verificar antes de insertar
+
                     Log.d("Conversacion", "Insertando conversación con el contacto: " + nombreContacto);
 
 
-                    // El usuario dijo "Sí", iniciar MenuConversacionActivity
+
                     nombreContacto = data.getStringExtra("NOMBRE_CONTACTO");
                     Intent menuIntent = new Intent(this, MenuConversacionActivity.class);
                     menuIntent.putExtra("NOMBRE_CONTACTO", nombreContacto);
                     menuIntent.putExtra("ID_CONVERSACION", idConversacion);
                     startActivity(menuIntent);
-                    finish(); // Finalizar esta actividad
+                    finish();
                 } else {
-                    // El usuario dijo "No", preguntar por el siguiente dispositivo
                     indexDispositivoActual++;
                     procesarSiguienteDispositivo();
                 }
@@ -180,15 +174,13 @@ public class BotonPosiblesConversacionesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Verificar si hay conversaciones no finalizadas
         DbConversacion dbConversacion = new DbConversacion(this);
-        int idConversacion_resumen = dbConversacion.obtenerIdConversacionNoFinalizada(); // Método para obtener el ID de la conversación no finalizada
+        int idConversacion_resumen = dbConversacion.obtenerIdConversacionNoFinalizada();
 
         Log.d("BotonPosiblesConversaciones", "onResume: idConversacionActual = " + idConversacion_resumen);
 
-        // Aquí solo se inicia la actividad si hay conversaciones no finalizadas
-        if (idConversacion_resumen != -1) { // Si se encontró una conversación no finalizada y la actividad no está activa
-            String nombreContacto = dbConversacion.obtenerNombreContactoPorId(idConversacion_resumen); // Método para obtener el nombre del contacto
+        if (idConversacion_resumen != -1) {
+            String nombreContacto = dbConversacion.obtenerNombreContactoPorId(idConversacion_resumen);
             Intent menuIntent = new Intent(this, MenuConversacionActivity.class);
             menuIntent.putExtra("NOMBRE_CONTACTO", nombreContacto);
             menuIntent.putExtra("ID_CONVERSACION", idConversacion_resumen);

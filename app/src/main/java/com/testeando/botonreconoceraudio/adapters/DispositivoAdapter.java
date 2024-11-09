@@ -29,7 +29,7 @@ public class DispositivoAdapter extends RecyclerView.Adapter<DispositivoAdapter.
         this.dispositivos = dispositivos;
         this.macs = macs;
         this.context = context;
-        this.dbAgenda = new DbAgenda(context); // Inicializa la instancia de DbAgenda
+        this.dbAgenda = new DbAgenda(context);
     }
 
     @NonNull
@@ -46,15 +46,11 @@ public class DispositivoAdapter extends RecyclerView.Adapter<DispositivoAdapter.
 
         holder.nombreContacto.setText(dispositivo);
 
-        // Manejar el clic en el item
         holder.itemView.setOnClickListener(v -> {
-            // Verificar si el dispositivo ya está agregado a la agenda
             Contacto contactoExistente = dbAgenda.getContactoByMac(mac);
             if (contactoExistente != null) {
-                // Si ya existe, mostrar un Toast con el nombre del contacto
                 Toast.makeText(context, "Dispositivo ya agregado: " + contactoExistente.getNombreContacto(), Toast.LENGTH_SHORT).show();
             } else {
-                // Si no existe, iniciar la actividad AgregarContactoActivity
                 Intent intent = new Intent(context, AgregarContactoActivity.class);
                 intent.putExtra("nombreDispositivo", dispositivo);
                 intent.putExtra("macDispositivo", mac);

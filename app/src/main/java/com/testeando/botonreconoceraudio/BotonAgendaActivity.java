@@ -53,7 +53,6 @@ public class BotonAgendaActivity extends AppCompatActivity {
         botonExplorar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Inicia la actividad BotonEmocionActivity
                 Intent intent = new Intent(BotonAgendaActivity.this, BotonExplorarActivity.class);
                 startActivity(intent);
             }
@@ -100,6 +99,5 @@ public class BotonAgendaActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Aquí se eliminaron las operaciones de escaneo de Bluetooth
     }
 }

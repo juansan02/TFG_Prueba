@@ -30,12 +30,12 @@ public class AgregarContactoActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Obtener el nombre del dispositivo y la dirección MAC de los extras
+
         String nombreDispositivo = getIntent().getStringExtra("nombreDispositivo");
         String macDispositivo = getIntent().getStringExtra("macDispositivo");
         boolean isAdded = false;
 
-        // Mostrar el nombre y la MAC del dispositivo en los TextViews correspondientes con HTML
+
         TextView textViewNombreDispositivo = findViewById(R.id.textViewNombreDispositivo);
 
         String formattedNombre = String.format("<b>%s</b> %s", getString(R.string.text_nombreDispositivo), nombreDispositivo);
@@ -47,17 +47,15 @@ public class AgregarContactoActivity extends AppCompatActivity {
             textViewNombreDispositivo.setText(Html.fromHtml(formattedNombre));
         }
 
-        // Configurar el botón
+
         Button btnAgregar = findViewById(R.id.btnConversaciones);
         btnAgregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Obtener el nombre del nuevo contacto
                 EditText etNombreNuevoUsuario = findViewById(R.id.etNombreNuevoUsuario);
                 String nombreContacto = etNombreNuevoUsuario.getText().toString().trim();
 
                 if(!nombreContacto.isEmpty()){
-                    // Crear instancia de DbAgenda
                     DbAgenda dbAgenda = new DbAgenda(AgregarContactoActivity.this);
                     boolean isAdded = dbAgenda.addContacto(nombreContacto, nombreDispositivo, macDispositivo);
 

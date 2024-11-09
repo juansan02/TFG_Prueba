@@ -34,17 +34,17 @@ public class Temporizador {
 
     public void iniciarTemporizador(final Runnable onFinish) {
         if (!getNoPreguntar()) {
-            setNoPreguntar(true); // Evita que se vuelva a preguntar
+            setNoPreguntar(true);
             handler.postDelayed(() -> {
-                setNoPreguntar(false); // Reiniciar la preferencia después de 5 segundos
+                setNoPreguntar(false);
                 if (onFinish != null) {
-                    onFinish.run(); // Ejecutar la acción cuando el temporizador termina
+                    onFinish.run();
                 }
             }, TEMPORIZADOR_DURACION);
         }
     }
 
     public void cancelarTemporizador() {
-        handler.removeCallbacksAndMessages(null); // Cancelar todos los callbacks
+        handler.removeCallbacksAndMessages(null);
     }
 }

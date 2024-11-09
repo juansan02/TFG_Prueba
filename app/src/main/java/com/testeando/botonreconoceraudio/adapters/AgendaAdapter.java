@@ -39,11 +39,11 @@ public class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.ContactoVi
         holder.nombreContacto.setText(contacto.getNombreContacto());
 
         holder.itemView.setOnClickListener(v -> {
-            // Crear un Intent para abrir InfoContactoActivity
+            //  Intent InfoContactoActivity
             Intent intent = new Intent(context, InfoContactoActivity.class);
 
             // Pasar información del contacto a la nueva actividad
-            intent.putExtra("contacto_id", contacto.getIdContacto()); // Asegúrate de que tienes un método getIdContacto()
+            intent.putExtra("contacto_id", contacto.getIdContacto());
             intent.putExtra("contacto_nombre", contacto.getNombreContacto());
 
             // Iniciar la actividad
@@ -62,7 +62,7 @@ public class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.ContactoVi
 
         public ContactoViewHolder(@NonNull View itemView) {
             super(itemView);
-            nombreContacto = itemView.findViewById(R.id.nombre_contacto); // Asegúrate de que este ID exista en item_contacto.xml
+            nombreContacto = itemView.findViewById(R.id.nombre_contacto);
         }
     }
 

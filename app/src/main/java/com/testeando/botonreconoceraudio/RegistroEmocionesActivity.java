@@ -16,7 +16,7 @@ import java.util.List;
 public class RegistroEmocionesActivity extends AppCompatActivity {
 
     private int idConversacion;
-    private TextView textViewEmociones; // Declara un TextView para mostrar las emociones
+    private TextView textViewEmociones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class RegistroEmocionesActivity extends AppCompatActivity {
         StringBuilder emocionesTexto = new StringBuilder();
         for (String tipoEmocion : emociones.keySet()) {
             int conteo = emociones.get(tipoEmocion);
-            String nombreEmocion = traducciones.getOrDefault(tipoEmocion, tipoEmocion); // Traduce o deja el tipo original
+            String nombreEmocion = traducciones.getOrDefault(tipoEmocion, tipoEmocion);
             emocionesTexto.append(nombreEmocion).append(": ").append(conteo).append("\n");
         }
 

@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- TextView para la fecha de la conversación -->
+
         <TextView
             android:id="@+id/fecha_conversacion"
             android:layout_width="match_parent"
@@ -21,7 +21,7 @@
             android:textSize="16sp"
             android:text="Fecha" />
 
-        <!-- TextView para la duración de la conversación -->
+
         <TextView
             android:id="@+id/duracion_conversacion"
             android:layout_width="match_parent"
@@ -30,12 +30,12 @@
             android:textSize="14sp"
             android:text="Duración" />
 
-        <!-- TextView invisible para la ID de la conversación -->
+
         <TextView
             android:id="@+id/id_conversacion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone" /> <!-- Oculto por defecto -->
+            android:visibility="gone" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
