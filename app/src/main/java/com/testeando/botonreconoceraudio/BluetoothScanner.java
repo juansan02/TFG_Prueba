@@ -20,7 +20,7 @@ public class BluetoothScanner {
     private BroadcastReceiver receiver;
     private List<String> dispositivosEncontrados;
     private List<String> macsEncontradas;
-    private boolean isReceiverRegistered = false; // Para controlar si el receptor está registrado
+    private boolean isReceiverRegistered = false;
 
     public BluetoothScanner(Context context, BroadcastReceiver receiver, List<String> dispositivos, List<String> macs) {
         this.context = context;
@@ -31,7 +31,6 @@ public class BluetoothScanner {
     }
 
     public void iniciarEscaneo() {
-        // Detener escaneo anterior si está en curso
         detenerEscaneo();
 
         if (bluetoothAdapter != null) {

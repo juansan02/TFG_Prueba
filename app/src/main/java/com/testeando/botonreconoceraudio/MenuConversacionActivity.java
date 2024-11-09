@@ -66,7 +66,7 @@ public class MenuConversacionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu_conversacion);
 
         nombreContacto = getIntent().getStringExtra("NOMBRE_CONTACTO");
-        idConversacion = getIntent().getIntExtra("ID_CONVERSACION", 0); // Obtener el ID de la conversación
+        idConversacion = getIntent().getIntExtra("ID_CONVERSACION", 0);
 
         Log.d("MenuConversacionActivity", "ID de la conversación obtenida en onCreate: " + idConversacion);
 
@@ -75,7 +75,6 @@ public class MenuConversacionActivity extends AppCompatActivity {
 
         long resultado = dbConversacion.insertarConversacion(idConversacion, nombreContacto, "no_finalizada");
 
-        // Verificar si la inserción fue exitosa
         if (resultado > 0) {
             Log.d("Conversacion", "Conversación insertada con éxito. ID: " + idConversacion);
         } else {
@@ -89,7 +88,6 @@ public class MenuConversacionActivity extends AppCompatActivity {
         btnAcabarConversacion = findViewById(R.id.btnAcabarConversacion);
         client = new OkHttpClient();
 
-        // Establecer título con el texto en negrita
         String textoConversacion = String.format("<b>%s</b> %s", getString(R.string.titulo_conversacion), nombreContacto);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             textViewNombreContacto.setText(Html.fromHtml(textoConversacion, Html.FROM_HTML_MODE_LEGACY));
@@ -97,7 +95,6 @@ public class MenuConversacionActivity extends AppCompatActivity {
             textViewNombreContacto.setText(Html.fromHtml(textoConversacion));
         }
 
-        // Iniciar el temporizador de la conversación
         tiempoInicio = System.currentTimeMillis();
 
 
@@ -207,15 +204,12 @@ public class MenuConversacionActivity extends AppCompatActivity {
                     Log.e("Translation Error", "Respuesta no exitosa: " + response.message());
                     return;
                 }
-
-                // Manejo de la respuesta JSON
                 try {
                     JSONObject jsonResponse = new JSONObject(responseData);
                     JSONArray translations = jsonResponse.getJSONArray("translations");
                     String translatedText = translations.getJSONObject(0).getString("text");
                     Log.d("Translated Text", "Texto traducido: " + translatedText);
 
-                    // Aquí puedes enviar el texto traducido a la API de emociones
                     enviarTextoAApi(translatedText);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -255,14 +249,12 @@ public class MenuConversacionActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Manejo de la respuesta JSON
                 String responseData = response.body().string();
                 try {
                     JSONObject jsonResponse = new JSONObject(responseData);
                     String label = jsonResponse.getString("label");
                     double score = jsonResponse.getDouble("score");
 
-                    // Inserta la emoción en la base de datos
                     DbEmocion dbEmocion = new DbEmocion(MenuConversacionActivity.this);
                     boolean insertado = dbEmocion.insertarEmocion(idConversacion, label, score);
 
@@ -273,7 +265,6 @@ public class MenuConversacionActivity extends AppCompatActivity {
                     }
 
 
-                    // Iniciar ResultadoActivity con la emoción y el score
                     Intent intent = new Intent(MenuConversacionActivity.this, ResultadoActivity.class);
                     intent.putExtra("label", label);
                     intent.putExtra("score", score);
@@ -288,34 +279,30 @@ public class MenuConversacionActivity extends AppCompatActivity {
     private void finalizarConversacion() {
         long tiempoFin = System.currentTimeMillis();
 
-        // Formato de fecha
         SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String fechaFinString = formatoFecha.format(new Date(tiempoFin));
 
-        // Obtener la fecha de inicio desde la base de datos
         DbConversacion dbConversacion = new DbConversacion(this);
         String fechaInicioString = dbConversacion.obtenerFechaInicioPorId(idConversacion);
         long duracionSegundos = 0;
 
         if (fechaInicioString != null) {
             try {
-                // Convertir las fechas a objetos Date
                 Date fechaInicio = formatoFecha.parse(fechaInicioString);
                 Date fechaFin = formatoFecha.parse(fechaFinString);
 
-                // Calcular la duración en segundos
-                duracionSegundos = (fechaFin.getTime() - fechaInicio.getTime()) / 1000; // Duración en segundos
+                duracionSegundos = (fechaFin.getTime() - fechaInicio.getTime()) / 1000;
             } catch (ParseException e) {
                 e.printStackTrace();
                 Toast.makeText(this, "Error al parsear las fechas.", Toast.LENGTH_SHORT).show();
-                return; // Salir si hay un error
+                return;
             }
         } else {
             Toast.makeText(this, "No se encontró la fecha de inicio.", Toast.LENGTH_SHORT).show();
-            return; // Salir si no se encuentra la fecha
+            return;
         }
 
-        int idUsuario = 1; // Cambia esto por el ID del usuario real
+        int idUsuario = 1;
         DbUsuario dbUsuario = new DbUsuario(this);
         String nombreUsuario = dbUsuario.obtenerNombreUsuario();
 
@@ -337,7 +324,6 @@ public class MenuConversacionActivity extends AppCompatActivity {
             }
         }
 
-        // Finalizar la actividad
         finish();
     }
 

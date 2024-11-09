@@ -28,7 +28,7 @@ public class IngresarNuevoUsuarioActivity extends AppCompatActivity {
 
         etNombreUsuario = findViewById(R.id.etNombreUsuario);
         btnContinuar = findViewById(R.id.btnContinuar);
-        dbUsuario = new DbUsuario(this); // Inicializamos DbUsuario
+        dbUsuario = new DbUsuario(this);
 
         btnContinuar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,15 +36,13 @@ public class IngresarNuevoUsuarioActivity extends AppCompatActivity {
                 String nombreUsuario = etNombreUsuario.getText().toString().trim();
 
                 if (!nombreUsuario.isEmpty()) {
-                    // Insertamos el nombre en la base de datos
                     long resultado = dbUsuario.insertarUsuario(nombreUsuario);
 
                     if (resultado != -1) {
-                        // Si la inserción fue exitosa, lanzamos el MainActivity
                         Intent intent = new Intent(IngresarNuevoUsuarioActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
-                        finish();  // Finalizar IngresarNuevoUsuarioActivity
+                        finish();
                     } else {
                         Toast.makeText(IngresarNuevoUsuarioActivity.this, "Error al guardar el nombre", Toast.LENGTH_SHORT).show();
                     }
@@ -54,14 +52,12 @@ public class IngresarNuevoUsuarioActivity extends AppCompatActivity {
             }
         });
 
-        // Utilizando el OnBackPressedDispatcher para manejar el botón "atrás"
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // Aquí bloqueamos el botón "atrás"
+
                 Toast.makeText(IngresarNuevoUsuarioActivity.this, "Debes introducir tu nombre para continuar", Toast.LENGTH_SHORT).show();
             }
         });
     }
-    //**************************
 }

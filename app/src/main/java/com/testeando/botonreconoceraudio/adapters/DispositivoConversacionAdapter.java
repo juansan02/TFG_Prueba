@@ -20,16 +20,16 @@ import java.util.List;
 
 public class DispositivoConversacionAdapter extends RecyclerView.Adapter<DispositivoConversacionAdapter.ViewHolder> {
 
-    private List<String> dispositivos; // Lista de dispositivos (puedes mantenerla para futuros usos)
-    private List<String> macs; // Lista de MACs de dispositivos
+    private List<String> dispositivos;
+    private List<String> macs;
     private Context context;
-    private DbAgenda dbAgenda; // Instancia de DbAgenda
+    private DbAgenda dbAgenda;
 
     public DispositivoConversacionAdapter(List<String> dispositivos, List<String> macs, Context context) {
         this.dispositivos = dispositivos;
         this.macs = macs;
         this.context = context;
-        this.dbAgenda = new DbAgenda(context); // Inicializa la instancia de DbAgenda
+        this.dbAgenda = new DbAgenda(context);
     }
 
     @NonNull
@@ -43,20 +43,15 @@ public class DispositivoConversacionAdapter extends RecyclerView.Adapter<Disposi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String mac = macs.get(position);
 
-        // Obtener el contacto asociado a la dirección MAC
         Contacto contacto = dbAgenda.getContactoByMac(mac);
         String nombreContacto = (contacto != null) ? contacto.getNombreContacto() : "Desconocido";
 
-        // Solo mostrar el nombre del contacto, sin la MAC
         holder.nombreContacto.setText(nombreContacto);
 
-        // Manejar el clic en el item
         holder.itemView.setOnClickListener(v -> {
-            // Iniciar AceptarConversacionActivity al hacer clic en el dispositivo
             Intent intent = new Intent(context, AceptarConversacionActivity.class);
             intent.putExtra("NOMBRE_CONTACTO", nombreContacto); // Enviar nombre del contacto
             intent.putExtra("MAC_DISPOSITIVO", mac); // Enviar MAC del dispositivo
-            // Utilizar el contexto de la actividad que invocó el adapter
             if (context instanceof BotonPosiblesConversacionesActivity) {
                 ((BotonPosiblesConversacionesActivity) context).startActivityForResult(intent, 1);
             }
@@ -66,7 +61,7 @@ public class DispositivoConversacionAdapter extends RecyclerView.Adapter<Disposi
 
     @Override
     public int getItemCount() {
-        return macs.size(); // Cambiar a macs.size() para evitar confusiones
+        return macs.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

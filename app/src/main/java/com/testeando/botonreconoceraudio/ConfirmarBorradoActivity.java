@@ -29,7 +29,6 @@ public class ConfirmarBorradoActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Obtener el nombre del contacto de los extras
         contactoNombre = getIntent().getStringExtra("contacto_nombre");
 
         TextView textViewConfirmacion = findViewById(R.id.textViewConfirmacion);
@@ -38,7 +37,7 @@ public class ConfirmarBorradoActivity extends AppCompatActivity {
         Button btnSi = findViewById(R.id.btnSi);
         Button btnNo = findViewById(R.id.btnNo);
 
-        // Manejar clic en el botón "Sí"
+
         btnSi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,15 +45,14 @@ public class ConfirmarBorradoActivity extends AppCompatActivity {
                 dbAgenda.borrarContacto(contactoNombre);
 
                 Intent intent = new Intent();
-                intent.putExtra("contacto_borrado", true); // Indicar que el contacto fue borrado
+                intent.putExtra("contacto_borrado", true);
                 setResult(RESULT_OK, intent);
 
 
-                finish(); // Termina la actividad
+                finish();
             }
         });
 
-        // Manejar clic en el botón "No"
         btnNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

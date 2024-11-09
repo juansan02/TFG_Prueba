@@ -15,7 +15,7 @@ public class AceptarConversacionActivity extends AppCompatActivity {
     private Button buttonNo;
     private String nombreContacto;
     private String macDispositivo;
-    private Temporizador temporizador; // Instancia de Temporizador
+    private Temporizador temporizador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +38,10 @@ public class AceptarConversacionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("INICIAR_CONVERSACION", true); // El usuario dijo "Sí"
-                resultIntent.putExtra("NOMBRE_CONTACTO", nombreContacto); // Pasamos el nombre del contacto
+                resultIntent.putExtra("INICIAR_CONVERSACION", true);
+                resultIntent.putExtra("NOMBRE_CONTACTO", nombreContacto);
                 setResult(RESULT_OK, resultIntent);
-                finish(); // Finalizar la actividad actual
+                finish();
             }
         });
 
@@ -51,7 +51,7 @@ public class AceptarConversacionActivity extends AppCompatActivity {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("INICIAR_CONVERSACION", false); // El usuario dijo "No"
                 setResult(RESULT_OK, resultIntent);
-                finish(); // Finalizar la actividad actual
+                finish();
             }
         });
 
@@ -60,8 +60,6 @@ public class AceptarConversacionActivity extends AppCompatActivity {
 
     private void evitarRepetirConsulta() {
         temporizador.iniciarTemporizador(() -> {
-            // Aquí puedes agregar cualquier lógica adicional que desees ejecutar después del temporizador.
-            // Por ejemplo, simplemente puedes dejarlo vacío si no necesitas hacer nada más.
         });
     }
 }

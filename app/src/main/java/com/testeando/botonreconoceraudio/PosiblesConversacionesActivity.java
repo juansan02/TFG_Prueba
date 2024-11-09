@@ -26,7 +26,7 @@ public class PosiblesConversacionesActivity extends AppCompatActivity {
     private WearableRecyclerView wearableRecyclerView;
     private DispositivoConversacionAdapter dispositivoAdapter;
     private DbAgenda dbAgenda;
-    private Button connectButton; // Nuevo botón para iniciar escaneo
+    private Button connectButton;
     private BluetoothScanner bluetoothScanner;
     private List<String> dispositivosEncontrados;
     private List<String> macsEncontradas;
@@ -43,7 +43,7 @@ public class PosiblesConversacionesActivity extends AppCompatActivity {
         });
 
         wearableRecyclerView = findViewById(R.id.recyclerViewDispositivos);
-        connectButton = findViewById(R.id.connectButton); // Inicializa el botón
+        connectButton = findViewById(R.id.connectButton);
         dbAgenda = new DbAgenda(this);
         dispositivosEncontrados = new ArrayList<>();
         macsEncontradas = new ArrayList<>();
@@ -55,16 +55,14 @@ public class PosiblesConversacionesActivity extends AppCompatActivity {
         connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Reiniciar las listas de dispositivos encontrados
                 dispositivosEncontrados.clear();
                 macsEncontradas.clear();
-                actualizarRecyclerView(); // Limpiar el RecyclerView
-                bluetoothScanner.iniciarEscaneo(); // Iniciar escaneo
+                actualizarRecyclerView();
+                bluetoothScanner.iniciarEscaneo();
             }
         });
     }
 
-    // BroadcastReceiver para manejar los dispositivos encontrados
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -73,19 +71,15 @@ public class PosiblesConversacionesActivity extends AppCompatActivity {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (device != null) {
                     String dispositivoMAC = device.getAddress();
-                    // Comprobar si el dispositivo ya ha sido agregado
                     if (!macsEncontradas.contains(dispositivoMAC)) {
-                        // Obtener el contacto asociado a la dirección MAC
                         Contacto contacto = dbAgenda.getContactoByMac(dispositivoMAC);
                         if (contacto != null) {
-                            // Solo añadir el dispositivo si hay un contacto asociado
                             macsEncontradas.add(dispositivoMAC);
                             dispositivosEncontrados.add(device.getName() != null ? device.getName() : "Desconocido");
                             Log.d("PosiblesConversacionesActivity", "Dispositivo encontrado: " + device.getName());
 
                             String nombreContacto = contacto.getNombreContacto();
                             Log.d("PosiblesConversacionesActivity", "Dispositivo asociado a: " + nombreContacto);
-                            // Solo inicializar la actividad de conversación si no está ya abierta
                             iniciarActividadConversacion(nombreContacto, dispositivoMAC);
                         } else {
                             Log.d("PosiblesConversacionesActivity", "No hay contacto asociado para: " + dispositivoMAC);

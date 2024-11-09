@@ -17,8 +17,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQ_CODE_SPEECH_INPUT = 100;
     private static final int PERMISSION_REQUEST_RECORD_AUDIO = 1;
 
-    private DbHelper dbHelper; // Declara el DbHelper
-    private DbUsuario dbUsuario; // Declaramos para trabajar con usuarios
+    private DbHelper dbHelper;
+    private DbUsuario dbUsuario;
 
     private Button botonEmocion;
     private Button botonAgenda;
@@ -33,10 +33,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Inicializa DbHelper para crear y gestionar la base de datos
         dbHelper = new DbHelper(this);
 
-        dbUsuario = new DbUsuario(this); // Inicializamos DbUsuario
+        dbUsuario = new DbUsuario(this);
 
         botonEmocion = findViewById(R.id.btnEmocion);
         botonAgenda = findViewById(R.id.btnAgenda);
@@ -47,21 +46,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-//        if(db != null){
-//            Toast.makeText(MainActivity.this, "Base de datos creada o ya creada", Toast.LENGTH_LONG).show();
-//        } else{
-//            Toast.makeText(MainActivity.this, "ERROR AL CREAR LA BASE", Toast.LENGTH_LONG).show();
-//        }
 
-        //DEJAR ESTO SI O SI, PARA QUE CUANDO SE INICIA LA APICACION SE COMPRUEBE SI ES PRIMER INGRESO O NO
         if (!dbUsuario.existeUsuario()) {
-            // Si no hay usuario, redirigir a IngresarNuevoUsuarioActivity
             Intent intent = new Intent(MainActivity.this, IngresarNuevoUsuarioActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            finish();  // Finalizamos MainActivity hasta que haya un usuario
+            finish();
         }else {
-            // Si existe, obtener el nombre y actualizar el TextView
             String nombreUsuario = dbUsuario.obtenerNombreUsuario();
             String textoBienvenida = getString(R.string.titulo_bienvenido, nombreUsuario);
             textviewBienvenido.setText(textoBienvenida);
@@ -69,29 +60,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        // Agrega el OnClickListener para el botón btnEmocion
         botonEmocion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Inicia la actividad BotonEmocionActivity
                 Intent intent = new Intent(MainActivity.this, BotonEmocionActivity.class);
                 startActivity(intent);
             }
         });
 
-        // Agrega el OnClickListener para el botón btnAgenda
         botonAgenda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Inicia la actividad BotonEmocionActivity
                 Intent intent = new Intent(MainActivity.this, BotonAgendaActivity.class);
                 startActivity(intent);
             }
         });
+
         botonNuevaConver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Inicia la actividad BotonEmocionActivity
                 Intent intent = new Intent(MainActivity.this, BotonPosiblesConversacionesActivity.class);
                 startActivity(intent);
             }

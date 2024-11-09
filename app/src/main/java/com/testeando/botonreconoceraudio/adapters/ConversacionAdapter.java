@@ -32,19 +32,15 @@ public class ConversacionAdapter extends RecyclerView.Adapter<ConversacionAdapte
     public void onBindViewHolder(@NonNull ConversacionViewHolder holder, int position) {
         Conversacion conversacion = conversaciones.get(position);
 
-        // Mostrar la fecha y la duración de la conversación
         holder.fechaConversacion.setText(conversacion.getFechaInicio());
         holder.duracionConversacion.setText(conversacion.getDuracionFormatted());
 
-        // Guardar la ID de la conversación en el TextView invisible
         holder.idConversacion.setText(String.valueOf(conversacion.getId()));
 
-        // Manejar el clic en la conversación
         holder.itemView.setOnClickListener(v -> {
-            // Obtener el contexto
             Context context = v.getContext();
             Intent intent = new Intent(context, InfoConversacion.class);
-            // Pasar el ID de la conversación a la nueva actividad
+
             intent.putExtra("id_conversacion", conversacion.getId());
             context.startActivity(intent);
         });

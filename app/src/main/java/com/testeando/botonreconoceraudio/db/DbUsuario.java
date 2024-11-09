@@ -13,7 +13,6 @@ public class DbUsuario {
         dbHelper = new DbHelper(context);
     }
 
-    // Método para insertar un nuevo usuario
     public long insertarUsuario(String nombre) {
         long resultado = -1;
         SQLiteDatabase database = dbHelper.getWritableDatabase();
@@ -22,12 +21,11 @@ public class DbUsuario {
             values.put("nombre", nombre);
             resultado = database.insert(DbHelper.TABLE_USUARIO, null, values);
         } finally {
-            database.close(); // Asegúrate de cerrar la base de datos
+            database.close();
         }
         return resultado;
     }
 
-    // Método para verificar si ya hay un usuario en la base de datos
     public boolean existeUsuario() {
         boolean existe = false;
         SQLiteDatabase database = dbHelper.getReadableDatabase();
@@ -38,12 +36,11 @@ public class DbUsuario {
             }
         } finally {
             cursor.close();
-            database.close(); // Cierra la base de datos
+            database.close();
         }
         return existe;
     }
 
-    // Método para obtener el nombre del primer usuario, el cual es el unico que hay, es decir, nosotros.
     public String obtenerNombreUsuario() {
         String nombre = null;
         SQLiteDatabase database = dbHelper.getReadableDatabase();
@@ -54,7 +51,7 @@ public class DbUsuario {
             }
         } finally {
             cursor.close();
-            database.close(); // Cierra la base de datos
+            database.close();
         }
         return nombre;
     }

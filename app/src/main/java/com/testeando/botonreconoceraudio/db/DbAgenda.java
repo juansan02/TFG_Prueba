@@ -16,28 +16,22 @@ public class DbAgenda extends DbHelper {
         super(context);
     }
 
-    // Método para añadir un contacto a la agenda
     public boolean addContacto(String nombreContacto, String nombreDispositivo, String macDispositivo) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Crear un ContentValues para insertar el nuevo contacto
         ContentValues values = new ContentValues();
         values.put("id_usuario", 1); // Establecer el id_usuario a 1
         values.put("nombre_contacto", nombreContacto);
         values.put("nombre_dispositivo", nombreDispositivo);
         values.put("mac_dispositivo", macDispositivo);
 
-        // Insertar el nuevo contacto y obtener el resultado
         long result = db.insert(DbHelper.TABLE_AGENDA, null, values);
 
-        // Cerrar la base de datos
         db.close();
 
-        // Retornar verdadero si la inserción fue exitosa, falso de lo contrario
         return result != -1;
     }
 
-    // Método para comprobar si un contacto ya existe por su dirección MAC
     public Contacto getContactoByMac(String macDispositivo) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(DbHelper.TABLE_AGENDA, null, "mac_dispositivo = ?", new String[]{macDispositivo}, null, null, null);
@@ -53,10 +47,9 @@ public class DbAgenda extends DbHelper {
         if (cursor != null) {
             cursor.close();
         }
-        return null; // No encontrado
+        return null;
     }
 
-    // Método para obtener el ID de un contacto por su nombre
     public Integer getIdContactoByNombre(String nombreContacto) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(DbHelper.TABLE_AGENDA, new String[]{"id_contacto"}, "nombre_contacto = ?", new String[]{nombreContacto}, null, null, null);
@@ -64,13 +57,13 @@ public class DbAgenda extends DbHelper {
         if (cursor != null && cursor.moveToFirst()) {
             int idContacto = cursor.getInt(cursor.getColumnIndexOrThrow("id_contacto"));
             cursor.close();
-            return idContacto; // Retornar el ID del contacto
+            return idContacto;
         }
 
         if (cursor != null) {
             cursor.close();
         }
-        return null; // No encontrado
+        return null;
     }
 
 

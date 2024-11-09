@@ -23,7 +23,7 @@ public class DbEmocion extends DbHelper {
         long resultado = db.insert(TABLE_EMOCION, null, values);
         db.close();
 
-        return resultado != -1; // Retorna true si se insertó correctamente
+        return resultado != -1;
     }
 
     public int contarEmocionesConContacto(String nombreContacto) {
@@ -35,7 +35,7 @@ public class DbEmocion extends DbHelper {
         Cursor cursor = db.rawQuery(query, new String[]{nombreContacto});
 
         if (cursor.moveToFirst()) {
-            totalEmociones = cursor.getInt(0); // Obtener el total de emociones
+            totalEmociones = cursor.getInt(0);
         }
         cursor.close();
         db.close();
@@ -43,7 +43,7 @@ public class DbEmocion extends DbHelper {
         return totalEmociones;
     }
 
-    // Método para contar las emociones asociadas a una conversación específica
+
     public int contarEmocionesPorConversacion(int idConversacion) {
         int totalEmociones = 0;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -52,7 +52,7 @@ public class DbEmocion extends DbHelper {
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                totalEmociones = cursor.getInt(0); // Obtener el total de emociones
+                totalEmociones = cursor.getInt(0);
             }
             cursor.close();
         }

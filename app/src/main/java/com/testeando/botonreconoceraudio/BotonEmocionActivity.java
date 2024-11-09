@@ -117,7 +117,6 @@ public class BotonEmocionActivity extends AppCompatActivity {
     }
 
     private void traducirTexto(String texto) {
-        // Crear el JSON que se enviará
         JSONObject jsonObject = new JSONObject();
         try {
             JSONArray texts = new JSONArray();
@@ -157,14 +156,13 @@ public class BotonEmocionActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Manejo de la respuesta JSON
                 try {
                     JSONObject jsonResponse = new JSONObject(responseData);
                     JSONArray translations = jsonResponse.getJSONArray("translations");
                     String translatedText = translations.getJSONObject(0).getString("text");
                     Log.d("Translated Text", "Texto traducido: " + translatedText);
 
-                    // Aquí puedes enviar el texto traducido a la API de emociones
+
                     enviarTextoAApi(translatedText);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -204,14 +202,13 @@ public class BotonEmocionActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Manejo de la respuesta JSON
+
                 String responseData = response.body().string();
                 try {
                     JSONObject jsonResponse = new JSONObject(responseData);
                     String label = jsonResponse.getString("label");
                     double score = jsonResponse.getDouble("score");
 
-                    // Inserta la emoción en la base de datos
                     DbEmocion dbEmocion = new DbEmocion(BotonEmocionActivity.this);
                     boolean insertado = dbEmocion.insertarEmocion(999, label, score); //999 significa que no ha sido de una conver, desconocido
 
@@ -221,7 +218,6 @@ public class BotonEmocionActivity extends AppCompatActivity {
                         Log.e("DB Insert", "Error al insertar la emoción en la base de datos");
                     }
 
-                    // Iniciar ResultadoActivity con la emoción y el score
                     Intent intent = new Intent(BotonEmocionActivity.this, ResultadoActivity.class);
                     intent.putExtra("label", label);
                     intent.putExtra("score", score);

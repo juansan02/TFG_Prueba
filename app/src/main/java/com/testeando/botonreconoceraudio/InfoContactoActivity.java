@@ -21,7 +21,7 @@ public class InfoContactoActivity extends AppCompatActivity {
 
     private Button botonConversaciones;
     private Button btnBorrarContacto;
-    private String contactoNombre; // Almacenar el nombre del contacto
+    private String contactoNombre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,6 @@ public class InfoContactoActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Obtener el nombre del contacto de los extras
         contactoNombre = getIntent().getStringExtra("contacto_nombre");
         botonConversaciones = findViewById(R.id.btnConversaciones);
         btnBorrarContacto = findViewById(R.id.btnBorrarContacto);
@@ -65,7 +64,6 @@ public class InfoContactoActivity extends AppCompatActivity {
             textViewVecesBoton.setText(Html.fromHtml(formattedVecesBoton));
         }
 
-        // Manejar clic en el botón de conversaciones
         botonConversaciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,11 +73,9 @@ public class InfoContactoActivity extends AppCompatActivity {
             }
         });
 
-        // Manejar clic en el botón de borrar contacto
         btnBorrarContacto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Iniciar la actividad de confirmación
                 Intent intent = new Intent(InfoContactoActivity.this, ConfirmarBorradoActivity.class);
                 intent.putExtra("contacto_nombre", contactoNombre);
                 startActivityForResult(intent, 1);
@@ -87,14 +83,13 @@ public class InfoContactoActivity extends AppCompatActivity {
         });
     }
 
-    // Manejar el resultado al volver de ConfirmarBorradoActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
             boolean contactoBorrado = data.getBooleanExtra("contacto_borrado", false);
             if (contactoBorrado) {
-                finish(); // Termina la actividad actual si el contacto fue borrado
+                finish();
             }
         }
     }
